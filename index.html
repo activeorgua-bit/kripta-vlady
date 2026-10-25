@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Крипта влади</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Криптовалюта в деклараціях народних депутатів IX скликання, міністрів і заступників з 2019 року: хто тримає, хто позбувся і як.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Unbounded:wght@500;700&display=swap">
+<style>
+  /* Макет: реєстр — один довгий лідерборд як головний екран, під ним динаміка, матриця, зникла крипта й примітки */
+  :root {
+    --bg: #f2f4f7; --surface: #ffffff; --ink: #121821; --muted: #566273; --line: #d8dde5; --track: #e7ebf1;
+    --cur: #2445c4; --was: #b4621b; --accent: #2445c4; --hl: #fff3c4;
+    --s1: #2445c4; --s2: #b4621b; --s3: #1f8a62; --s4: #8b3fb8; --s5: #c23452; --s6: #0f7d99; --s7: #7a6a12; --s8: #5b6b80; --s9: #d1771f; --s10: #3c9b3a;
+    --f-display: "Unbounded", "Golos Text", system-ui, sans-serif;
+    --f-body: "Golos Text", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --f-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+    --r: 10px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0e1218; --surface: #161c25; --ink: #e7ecf3; --muted: #9aa6b7; --line: #29323f; --track: #1f2732;
+      --cur: #8aa2ff; --was: #f0a35a; --accent: #8aa2ff; --hl: #3b3417;
+      --s1: #8aa2ff; --s2: #f0a35a; --s3: #4cc495; --s4: #c48ae8; --s5: #f07890; --s6: #4fc3df; --s7: #d8c35a; --s8: #a3b1c4; --s9: #ffb15e; --s10: #7fd47c;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0e1218; --surface: #161c25; --ink: #e7ecf3; --muted: #9aa6b7; --line: #29323f; --track: #1f2732;
+    --cur: #8aa2ff; --was: #f0a35a; --accent: #8aa2ff; --hl: #3b3417;
+    --s1: #8aa2ff; --s2: #f0a35a; --s3: #4cc495; --s4: #c48ae8; --s5: #f07890; --s6: #4fc3df; --s7: #d8c35a; --s8: #a3b1c4; --s9: #ffb15e; --s10: #7fd47c;
+    color-scheme: dark;
+  }
+  body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.5; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  h1, h2, h3 { text-wrap: balance; margin: 0; }
+  h1 { font-family: var(--f-display); font-weight: 700; font-size: clamp(30px, 6vw, 52px); letter-spacing: -.01em; line-height: 1.05; }
+  h2 { font-family: var(--f-display); font-weight: 500; font-size: clamp(20px, 3.2vw, 26px); }
+  h3 { font-size: 16px; font-weight: 600; }
+  p { margin: 0; }
+  a { color: var(--accent); }
+  .kicker { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .lede { max-width: 68ch; font-size: 17px; color: var(--ink); }
+  .lede b { font-weight: 600; }
+  .note { color: var(--muted); font-size: 13.5px; max-width: 80ch; }
+  .num { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+  header.top { display: grid; gap: 14px; }
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px 24px; padding-top: 10px; border-top: 1px solid var(--line); }
+  .fact { display: grid; gap: 2px; min-width: 120px; }
+  .fact .v { font-family: var(--f-mono); font-size: 22px; font-weight: 500; }
+  .fact .k { font-size: 12.5px; color: var(--muted); }
+  section { display: grid; gap: 14px; min-width: 0; }
+  .sec-head { display: grid; gap: 6px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; padding: 10px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+  .seg { display: inline-flex; flex-wrap: wrap; max-width: 100%; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .seg button { font: inherit; font-size: 13px; padding: 6px 12px; border: 0; background: transparent; color: var(--muted); cursor: pointer; }
+  .seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+  .seg button:focus-visible, select:focus-visible, input:focus-visible, .row-btn:focus-visible, .chk:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+  select, input[type="search"] { font: inherit; font-size: 13.5px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); max-width: 100%; }
+  input[type="search"] { min-width: 0; width: 200px; }
+  .chk { display: inline-flex; gap: 6px; align-items: center; font-size: 13px; color: var(--muted); cursor: pointer; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 13px; color: var(--muted); align-items: center; }
+  .sw { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  .count { font-size: 13px; color: var(--muted); margin-left: auto; }
+
+  /* лідерборд */
+  .board { display: grid; gap: 2px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 6px; }
+  .row { display: grid; }
+  .row-btn { all: unset; box-sizing: border-box; cursor: pointer; display: grid; grid-template-columns: 2.2em minmax(0, 21em) minmax(0, 1fr); gap: 4px 12px; align-items: center; padding: 7px 8px; border-radius: 8px; }
+  .row-btn:hover { background: var(--track); }
+  .rank { font-family: var(--f-mono); font-size: 12px; color: var(--muted); text-align: right; }
+  .who { min-width: 0; }
+  .who .nm { font-weight: 500; font-size: 14.5px; line-height: 1.25; }
+  .who .sub { font-size: 12px; color: var(--muted); line-height: 1.3; overflow-wrap: anywhere; }
+  .who .sub i { font-style: normal; }
+  .barbox { position: relative; min-width: 0; display: flex; align-items: center; gap: 8px; }
+  .bar { height: 14px; border-radius: 4px; flex: none; min-width: 2px; }
+  .bar.cur { background: var(--cur); }
+  .bar.was { background: var(--was); }
+  .lbl { font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .lbl .num { font-weight: 500; }
+  .detail { margin: 2px 8px 10px calc(2.2em + 20px); padding: 10px 12px; border-left: 3px solid var(--line); display: grid; gap: 6px; font-size: 14px; max-width: 80ch; }
+  .detail .meta { font-size: 13px; color: var(--muted); }
+  .src { font-size: 12.5px; color: var(--muted); }
+  .src a { color: var(--muted); }
+  .pill { display: inline-block; font-size: 11px; padding: 0 7px; border-radius: 999px; border: 1px solid currentColor; margin-left: 6px; vertical-align: 1px; white-space: nowrap; }
+  .pill.full { color: var(--was); }
+  .pill.part { color: var(--muted); }
+
+  /* графік динаміки */
+  .chart { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 10px 6px 4px; position: relative; min-width: 0; }
+  .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .chart text { fill: var(--muted); font-family: var(--f-mono); font-size: 11px; }
+  .tip { position: absolute; pointer-events: none; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font-size: 12.5px; box-shadow: 0 6px 20px rgba(0,0,0,.12); max-width: 300px; z-index: 3; }
+  .tip b { display: block; margin-bottom: 4px; }
+
+  /* таблиці */
+  .tablebox { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { padding: 7px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  th { font-weight: 600; font-size: 12.5px; color: var(--muted); background: var(--surface); position: sticky; top: 0; }
+  td.n, th.n { text-align: right; font-family: var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .matrix th.coin { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; font-family: var(--f-mono); font-weight: 500; padding: 8px 4px; text-align: left; }
+  .matrix td.c { text-align: center; font-family: var(--f-mono); padding: 6px 4px; min-width: 26px; }
+  .matrix td.g { position: sticky; left: 0; background: var(--surface); min-width: 12em; max-width: 18em; }
+  .matrix td.sect { font-family: var(--f-mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); background: var(--track); }
+  .gone td.why { min-width: 22em; max-width: 46em; }
+
+  .prose { display: grid; gap: 12px; max-width: 80ch; }
+  .prose ul { margin: 0; padding-left: 1.2em; display: grid; gap: 6px; }
+  .prose h3 { margin-top: 8px; }
+  footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 14px; display: grid; gap: 4px; }
+
+  @media (max-width: 640px) {
+    .row-btn { grid-template-columns: 2em minmax(0, 1fr); }
+    .barbox { grid-column: 2; }
+    .detail { margin-left: 8px; }
+    input[type="search"], select { width: 100%; }
+    .controls { position: static; }
+  }
+  @media (prefers-reduced-motion: no-preference) { .bar { transition: width .25s ease; } }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <span class="kicker">Декларації НАЗК · 2019–2025 · дані на 25.10.2026</span>
+    <h1>Крипта влади</h1>
+    <p class="lede" id="lede">Хто з народних депутатів IX скликання, міністрів і заступників з 2019 року декларував криптовалюту, скільки вона коштувала тоді й зараз, хто її позбувся і як це пояснив.</p>
+    <div class="facts" id="facts"></div>
+  </header>
+
+  <section id="board-sec" aria-labelledby="h-board">
+    <div class="sec-head">
+      <h2 id="h-board">Лідерборд</h2>
+      <p class="note">Кожен рядок — людина, яка декларувала криптовалюту з 2019 року. Колір: <span class="sw" style="background:var(--cur)"></span>чинні на посаді, <span class="sw" style="background:var(--was)"></span>колишні. Натисніть рядок, щоб побачити пояснення й джерела.</p>
+    </div>
+    <div class="controls" role="group" aria-label="Фільтри лідерборду">
+      <div class="seg" id="metric" role="group" aria-label="Показник">
+        <button type="button" data-v="pk" aria-pressed="true">Пік з 2019</button>
+        <button type="button" data-v="now" aria-pressed="false">Зараз</button>
+        <button type="button" data-v="van" aria-pressed="false">Зникло</button>
+      </div>
+      <select id="f-body" aria-label="Орган"></select>
+      <select id="f-st" aria-label="Статус">
+        <option value="all">Чинні й колишні</option><option value="чинний">Лише чинні</option><option value="колишній">Лише колишні</option>
+      </select>
+      <select id="f-has" aria-label="Крипта зараз">
+        <option value="all">Усі, хто мав крипту</option><option value="now">Є крипта зараз</option>
+        <option value="gone">Позбулися (повністю чи частково)</option><option value="full">Позбулися повністю</option><option value="part">Позбулися частково</option>
+      </select>
+      <input type="search" id="f-q" placeholder="Прізвище" aria-label="Пошук за прізвищем">
+      <label class="chk"><input type="checkbox" id="f-log" checked> логарифмічна шкала</label>
+      <span class="count" id="b-count"></span>
+    </div>
+    <p class="note" id="metric-note"></p>
+    <div class="board" id="board"></div>
+  </section>
+
+  <section id="trend-sec" aria-labelledby="h-trend">
+    <div class="sec-head">
+      <h2 id="h-trend">Крипта за роками</h2>
+      <p class="note">Сума задекларованих монет за ціною на 31 грудня кожного року (на цю дату складається щорічна декларація). Спільне майно подружжя рахується один раз. Наведіть на рік, щоб побачити суми й кількість власників.</p>
+    </div>
+    <div class="controls" style="position:static" role="group" aria-label="Режим графіка">
+      <div class="seg" id="t-mode" role="group" aria-label="Режим">
+        <button type="button" data-v="total" aria-pressed="true">Загалом</button>
+        <button type="button" data-v="body" aria-pressed="false">Рада й уряд</button>
+        <button type="button" data-v="fr" aria-pressed="false">Рада за фракціями</button>
+        <button type="button" data-v="min" aria-pressed="false">Уряд за міністерствами</button>
+      </div>
+      <label class="chk"><input type="checkbox" id="t-log" checked> логарифмічна шкала</label>
+    </div>
+    <div class="chart" id="trend"></div>
+    <div class="legend" id="t-legend"></div>
+  </section>
+
+  <section id="matrix-sec" aria-labelledby="h-matrix">
+    <div class="sec-head">
+      <h2 id="h-matrix">Монети за фракціями й міністерствами</h2>
+      <p class="note">Скільки людей у групі декларували кожну монету. Наведіть на клітинку, щоб побачити прізвища. Фракція — за даними Ради; для тих, хто склав мандат, — партія, від якої обрано.</p>
+    </div>
+    <div class="controls" style="position:static" role="group" aria-label="Період матриці">
+      <div class="seg" id="m-mode" role="group" aria-label="Період">
+        <button type="button" data-v="c19" aria-pressed="true">Будь-коли з 2019</button>
+        <button type="button" data-v="now" aria-pressed="false">Зараз</button>
+      </div>
+    </div>
+    <div class="tablebox"><table class="matrix" id="matrix"></table></div>
+  </section>
+
+  <section id="gone-sec" aria-labelledby="h-gone">
+    <div class="sec-head">
+      <h2 id="h-gone">Крипта, що зникла</h2>
+      <p class="note">Для кожної монети — найбільша задекларована кількість мінус кількість в останній декларації, за ціною на 31 грудня останнього року, коли цю кількість ще декларували. Пояснення — з самих декларацій (доходи, правочини, повідомлення про суттєві зміни) і публікацій; джерела поруч.</p>
+    </div>
+    <div class="controls" style="position:static"><input type="search" id="g-q" placeholder="Прізвище, монета, фракція" aria-label="Пошук у таблиці зниклої крипти"><span class="count" id="g-count"></span></div>
+    <div class="tablebox"><table class="gone" id="gone"></table></div>
+  </section>
+
+  <section id="method" aria-labelledby="h-method" class="prose">
+    <h2 id="h-method">Методологія</h2>
+    <h3>Вибірка</h3>
+    <ul>
+      <li>Усі народні депутати IX скликання (обрані у 2019 році та пізніше), чинні й ті, хто склав мандат, — за даними data.rada.gov.ua.</li>
+      <li>Чинний склад уряду — з kmu.gov.ua і офіційних сторінок міністерств (21.10.2026); заступників Мінекономіки й Мінгромад доповнено тими, чия власна декларація називає цю посаду.</li>
+      <li>Колишні прем'єри, віцепрем'єри, міністри й заступники урядів Гончарука, Шмигаля й Свириденко — за їхніми власними деклараціями: посада міністра чи заступника в щорічній декларації за 2019 рік і пізніше або в декларації при звільненні чи повідомленні, поданих з 2020 року. Так відсіяно заступників уряду Гройсмана, звільнених восени 2019-го. Хто склав мандат нардепа й пішов в уряд, показаний в урядовій ролі.</li>
+      <li id="m-sample"></li>
+    </ul>
+    <h3>Що вважаємо криптою</h3>
+    <ul>
+      <li>Розділ «Нематеріальні активи» (тип «Криптовалюта» або «Інше → Криптовалюта»), а в старій формі декларацій (до 2021 року) — записи в розділах «Нематеріальні активи», «Цінне рухоме майно» та «Грошові активи», де названо монету («Біткойн», «58 Bitcoin», «Etherium»). Повні назви зведено до тикерів.</li>
+      <li>Щорічні декларації та декларації «після звільнення»; з виправлених версій — найпізніша. Декларації при звільненні не аналізувалися.</li>
+      <li>Продажі, купівлі, дарування — з розділів «Доходи» та «Видатки й правочини» і з повідомлень про суттєві зміни в майновому стані.</li>
+    </ul>
+    <h3>Оцінка</h3>
+    <ul>
+      <li><b>Пік з 2019</b> і динаміка — за ціною монети на 31 грудня року декларації: Binance, для монет, яких там немає, — OKX; BTC і BCH до 2019 року — Bitstamp; гривня — офіційний курс НБУ.</li>
+      <li><b>Зараз</b> — кількість монет в останній щорічній декларації × ціна CoinGecko на 21.10.2026 (монети, додані 25.10.2026, — на 25.10.2026). Якщо людина вже не на посаді, остання декларація може бути давньою — біля суми стоїть її рік.</li>
+      <li><b>Зникло</b> — найбільша задекларована кількість кожної монети мінус кількість в останній декларації. Монета, що лишилася в декларації без кількості, зниклою не рахується.</li>
+      <li>Спільне майно подружжя, яке задекларували обоє, рахується один раз; пари визначено за складом родини в деклараціях. Де по батькові в декларації не вказано, пару позначено «ймовірно».</li>
+    </ul>
+    <h3>Обмеження</h3>
+    <ul>
+      <li>Частина депутатів і членів уряду не має публічних декларацій (ймовірно, закриті декларації військовослужбовців); для кількох десятків декларацій немає повного тексту.</li>
+      <li>Для деяких монет немає історичної ціни (FTX Token на кінець 2022 року, Sundog, Coreum) або ринкової ціни взагалі (Relictum Pro) — їх вартість не оцінено.</li>
+      <li>Декларація показує задеклароване, а не фактичне володіння: НАЗК у кількох випадках не визнало крипту підтвердженою.</li>
+    </ul>
+
+    <h2>Фактчекінг</h2>
+    <ul>
+      <li><a href="https://www.slovoidilo.ua/2026/04/17/infografika/finansy/25-hryven-17-miljoniv-koho-nardepiv-najbilshe-zaoshhadzhen-krypti" target="_blank" rel="noopener">«Слово і діло», 17.04.2026</a>: усі 14 нардепів зі статті є у вибірці, гривневі суми (вартість набуття) збігаються. Розбіжність одна: у Заблоцького там 6 245 ₴ з первинної декларації; у виправленій від 30.04.2026 — USDT на 425 410 ₴, тут береться виправлена. У Бондаренка в статті 79 300 ₴, у декларації 79 930 ₴.</li>
+      <li><a href="https://www.obozrevatel.com/ukr/ekonomika-glavnaya/fea/kriptomiljoneri-na-sluzhbi-ukraini-cuddi-politsejski-i-nardepi-pokazali-skilki-mayut-bitkoiniv-i-ne-tilki.htm" target="_blank" rel="noopener">OBOZ.UA, 02.04.2026</a> (дані Incrypted): 80 BTC Бондаренка, 6,1 BTC Чернєва, XRP Юнакова й подружжя Железняк–Коваль, DOGE Нагаєвського й Лероса, LUNC Швачка — збігається.</li>
+      <li><a href="https://www.chesno.org/post/6942/" target="_blank" rel="noopener">ЧЕСНО, «Депутатське крісло на мільйони»</a>: Гурін у 2025 році продав крипту на 210 тис. ₴ — у декларації 210 771 ₴.</li>
+      <li><a href="https://hromadske.ua/posts/miljoni-keshu-elitni-avto-ta-masivni-kriptogamanci-hto-z-nardepiv-ne-otrimav-pidozru-za-brehnyu-v-deklaraciyah" target="_blank" rel="noopener">Громадське, 12.04.2023</a>: перевірки НАЗК щодо Бондаренка й Лероса; позиції обох враховано в поясненнях.</li>
+      <li>Висновки НАЗК щодо Скороход, Гуріна, Лероса й Бондаренка — за публікаціями «Слова і діла» (2021–2022); підозра НАБУ Маріковському — <a href="https://glavcom.ua/country/criminal/nardep-vid-sluhi-narodu-otrimav-pidozru-cherez-nedostovirnu-deklaratsiju-983537.html" target="_blank" rel="noopener">Главком, 31.01.2024</a>. Посилання — в поясненнях до кожної особи.</li>
+    </ul>
+
+    <h2>Примітки</h2>
+    <ul>
+      <li>Підозра, висновок НАЗК чи кримінальне провадження не є доведенням вини. Людина вважається невинуватою, доки її вину не встановить суд.</li>
+      <li>Пояснення складено з декларацій і публікацій, наведених поруч; де пояснень немає, так і написано. Довідкові описи монет складено для цієї сторінки.</li>
+      <li>Посада колишніх членів уряду — з їхніх власних декларацій НАЗК; чинних — з офіційних сторінок.</li>
+    </ul>
+    <h2>Джерела даних</h2>
+    <ul>
+      <li>Єдиний державний реєстр декларацій НАЗК (public.nazk.gov.ua) — повна копія станом на жовтень 2026 року.</li>
+      <li>Відкриті дані Верховної Ради (data.rada.gov.ua); kmu.gov.ua; офіційні сайти міністерств.</li>
+      <li>Ціни: CoinGecko (поточні), Binance, OKX, Bitstamp (історичні), курс НБУ.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <span>Дані на 25.10.2026. Сторінка статична: усі цифри вшиті в неї і не оновлюються самі.</span>
+  </footer>
+</div>
+
+<script>
+const DATA = {"summary":{"total":898,"found":869,"mp":437,"gov":432,"ever":48,"holders":31,"now_usd":12454860,"gone_full":17,"gone_part":13},"persons":[{"id":118,"n":"Урбанський Анатолій Ігорович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"За майбутнє","post":"народний депутат","flag":"","hold":false,"now":0,"now_y":2025,"now_c":[],"pk":124564753,"pk_y":2020,"pk_q":"BTC 4 256; BCH 4 256","pk_now":361605011,"van":124564753,"van_now":361605011,"van_c":"BTC 4 256 (2020); BCH 4 256 (2020)","gone":"full","yrs":{"2019":31495762,"2020":124564753,"2021":0,"2022":0},"c19":["BCH","BTC"],"story":"Подарував. У декларації за 2021 рік є запис «дарування — криптовалюта» від 18.01.2021, кому — не вказано. У деклараціях за 2021–2022 роки біткоїни ще згадано без кількості, з декларації за 2023 рік їх немає. Походження пояснював вкладенням у 2014 році.","expl":"2021: дарування (передано)","src":[["декларація за 2021","https://public.nazk.gov.ua/documents/ddb3958e-73d6-47b6-a250-9e0346d77ac1"],["декларація за 2023","https://public.nazk.gov.ua/documents/cc7c9f5c-1d17-4a79-81b6-b3732ff2e538"],["Радіо Свобода, 24.04.2021","https://www.radiosvoboda.org/a/news-urbanskyi-bitkoiny/31220508.html"]],"doc":"https://public.nazk.gov.ua/documents/f3be1f25-0916-40d6-98d5-4f5c433ef9a3"},{"id":32,"n":"Солод Юрій Васильович","body":"Рада","cat":"Народний депутат","st":"колишній","g":"Опозиційна платформа — За життя","post":"народний депутат","flag":"подружжя: Королевська Наталія Юріївна (народний депутат, Опозиційна платформа — За життя)","hold":false,"now":0,"now_y":2023,"now_c":[],"pk":28900700,"pk_y":2020,"pk_q":"XMR 185 000","pk_now":112258000,"van":28900700,"van_now":112258000,"van_c":"XMR 185 000 (2020)","gone":"full","yrs":{"2020":28900700},"c19":["XMR"],"story":"Майно сина, спільне з дружиною-нардепкою. 185 000 Monero (набуті 03.12.2015 за 1,62 млн ₴) записано за членом сім'ї лише в декларації за 2020 рік — і в нього, і в його дружини Наталії Королевської (тут рахуємо один раз). Їхній син, депутат Краматорської міськради, задекларував ці монети у власній декларації (CoinDesk, ForkLog). З декларації за 2021 рік запису в батьків немає.","expl":"у деклараціях пояснення немає","src":[["декларація за 2020","https://public.nazk.gov.ua/documents/f0f6a865-ac0e-4985-8211-91b5e4279f50"],["декларація за 2021","https://public.nazk.gov.ua/documents/1be585e1-7198-4dc0-8b5e-86ad794b472a"],["CoinDesk","https://www.coindesk.com/ukrainian-politician-reported-owning-24-5m-xmr"],["ForkLog","https://forklog.com/en/son-of-ukrainian-mps-declares-23-7-million-in-monero-cryptocurrency/"]],"doc":"https://public.nazk.gov.ua/documents/b00cdea7-f736-4ae8-9acc-c5f073515e7e"},{"id":246,"n":"Бондаренко Олег Володимирович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Слуга народу","post":"народний депутат","flag":"","hold":true,"now":6773600,"now_y":2025,"now_c":[["BTC",80.0,6773600]],"pk":7486080,"pk_y":2024,"pk_q":"BTC 80","pk_now":6773600,"van":0,"van_now":0,"van_c":"","gone":"no","yrs":{"2019":575618,"2020":2313890,"2021":3697354,"2022":1323392,"2023":3382686,"2024":7486080,"2025":7011858},"c19":["BTC"],"story":"Не позбувся: 80 BTC досі в декларації (дата набуття в декларації — 07.10.2013). У січні 2022 року НАЗК не визнало володіння підтвердженим (документів про купівлю й публічної адреси гаманця не надав) і побачило ознаки ч. 2 ст. 366-2 ККУ. За словами самого Бондаренка (Громадське, 2023), НАБУ у січні 2023 року закрило провадження за цим висновком, не знайшовши складу злочину; купив біткоїни, за його словами, у 2011–2012 роках приблизно за $10 тис., а адресу гаманця розкривати не зобов'язаний.","expl":"у деклараціях пояснення немає","src":[["декларація за 2025","https://public.nazk.gov.ua/documents/37bbe09a-cb1e-459b-8326-3de96b84bc37"],["Слово і діло, 13.01.2022","https://www.slovoidilo.ua/2022/01/13/novyna/polityka/nardep-sluhy-narodu-bondarenko-ne-pidtverdyv-vlasnosti-80-bitkoyiniv-nazk"],["Громадське, 12.04.2023","https://hromadske.ua/posts/miljoni-keshu-elitni-avto-ta-masivni-kriptogamanci-hto-z-nardepiv-ne-otrimav-pidozru-za-brehnyu-v-deklaraciyah"]],"doc":"https://public.nazk.gov.ua/documents/37bbe09a-cb1e-459b-8326-3de96b84bc37"},{"id":73,"n":"Скороход Анна Костянтинівна","body":"Рада","cat":"Народний депутат","st":"чинний","g":"За майбутнє","post":"народний депутат","flag":"","hold":false,"now":0,"now_y":2025,"now_c":[],"pk":4841547,"pk_y":2020,"pk_q":"BTC 162; ETH 208; ETC 485","pk_now":14243704,"van":4841547,"van_now":14243704,"van_c":"BTC 162 (2020); ETH 208 (2020); ETC 485 (2020)","gone":"full","yrs":{"2020":4841547},"c19":["BTC","ETC","ETH"],"story":"Розлучення. Більшу частину (118 BTC, ETH, ETC) декларувала як майно чоловіка, решту (44 BTC, ETH, ETC) — як власне. З квітня 2021 року подружжя не живе разом, у декларації за 2021 рік крипти немає. НАЗК не визнало володіння підтвердженим; вона пояснила, що всі операції вів чоловік і після розлучення не дав їй доступу до ключів.","expl":"у деклараціях пояснення немає","src":[["декларація за 2021","https://public.nazk.gov.ua/documents/0392c5b4-8f84-475b-a5dd-657e783f7cee"],["Слово і діло, 08.11.2021","https://www.slovoidilo.ua/2021/11/08/novyna/polityka/nardep-anna-skoroxod-ne-nadala-nazk-dokumentiv-pidtverdzhennya-nayavnosti-kryptovalyuty-27-mln"]],"doc":"https://public.nazk.gov.ua/documents/4a499535-5273-4a30-9af6-e59b856ac4ea"},{"id":843,"n":"Халімон Ігор Сергійович","body":"Уряд","cat":"Заступник міністра","st":"колишній","g":"Міністерство оборони","post":"Заступник міністра","flag":"","hold":true,"now":4233500,"now_y":2021,"now_c":[["BTC",50.0,4233500]],"pk":2310846,"pk_y":2021,"pk_q":"BTC 50","pk_now":4233500,"van":0,"van_now":0,"van_c":"","gone":"no","yrs":{"2020":1446182,"2021":2310846},"c19":["BTC"],"story":"Невідомо. 50 BTC (куплені 14.02.2013 за 13 892 ₴) — у щорічних деклараціях за 2020 і 2021 роки; пізніших щорічних декларацій у реєстрі немає, тож і поточна оцінка ($4,2 млн) рахується за декларацією за 2021 рік. Forbes Україна у 2023 році включив його до рейтингу власників біткоїнів.","expl":"у деклараціях пояснення немає","src":[["декларація за 2020","https://public.nazk.gov.ua/documents/06e69b0d-210e-44f5-b8b9-cb5c6065ce60"],["декларація за 2021","https://public.nazk.gov.ua/documents/2f3dde1d-975f-4094-a8ba-d4181f4dd3ac"],["Forbes Україна, 02.2023","https://forbes.ua/money/ukrainski-kriptomilyoneri-khto-mae-naybilshe-bitkoiniv-17022023-11808"]],"doc":"https://public.nazk.gov.ua/documents/2f3dde1d-975f-4094-a8ba-d4181f4dd3ac"},{"id":192,"n":"Гурін Дмитро Олександрович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Слуга народу","post":"народний депутат","flag":"","hold":true,"now":3370,"now_y":2025,"now_c":[["BTC",0.0398,3370]],"pk":1941111,"pk_y":2021,"pk_q":"BTC 42","pk_now":3556140,"van":1774227,"van_now":3552770,"van_c":"BTC 41,96 (2023)","gone":"part","yrs":{"2019":302200,"2020":1214792,"2021":1941111,"2022":694781,"2023":1775910,"2025":3488},"c19":["BTC"],"story":"Подарував дружині, потім — заява про крадіжку. 01.12.2020 право власності на «42 біткоїна» припинилося, член сім'ї задекларував подарунок від нього на 22,6 млн ₴. За словами Гуріна, 21.04.2021 разом з авто викрали флешку з «холодним гаманцем»; НАЗК документів не отримало. Проте 42 BTC декларувалися як майно дружини ще до декларації за 2023 рік, у декларації за 2024 рік їх немає.","expl":"2020: відчуження (продаж/припинення права); 2025: дохід від продажу 210 771 ₴; 2025: купівля 366 011 ₴; 2025: відчуження (продаж/припинення права)","src":[["декларація за 2020","https://public.nazk.gov.ua/documents/e31aff19-1bb0-4f73-bb3c-5428369f7216"],["декларація за 2024","https://public.nazk.gov.ua/documents/b8e357b6-a9b3-46ec-a98b-8bbbbb8dd8c8"],["Слово і діло, 17.09.2021","https://ru.slovoidilo.ua/2021/09/17/novost/politika/nardepa-gurina-poxitili-xolodnyj-koshelek-bitkoinami-22-milliona-griven-napk"]],"doc":"https://public.nazk.gov.ua/documents/e37dd2b0-4a67-41cd-8682-186dee72fc2c"},{"id":87,"n":"Вельможний Сергій Анатолійович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Довіра","post":"народний депутат","flag":"","hold":true,"now":14,"now_y":2025,"now_c":[["USDT",10.532806,11],["ADA",14.48,3],["FDUSD",0.08,0],["BNB",0.000266,0]],"pk":1785282,"pk_y":2020,"pk_q":"XMR 11 428","pk_now":6934510,"van":1815410,"van_now":6981728,"van_c":"XMR 11 428 (2020); BNB 42,35 (2023); ADA 7 902 (2021); ETH 5,32 (2022); USDT 219,9 (2023); NFP 1,15 (2023); XRP 0,434 (2021); IOTA 0,0793 (2021); ACE 0,00257 (2023)","gone":"part","yrs":{"2020":1785282,"2021":10358,"2022":6367,"2023":13436,"2024":24,"2025":16},"c19":["ACE","ADA","BNB","ETH","FDUSD","IOTA","NFP","USDT","XMR","XRP"],"story":"Пояснення немає. 11 428 Monero (набуті у 2015 році) значилися за членом сім'ї лише в декларації за 2020 рік; у декларації за 2021 рік їх немає, продажу, дарування чи доходу не задекларовано.","expl":"у деклараціях пояснення немає","src":[["декларація за 2021","https://public.nazk.gov.ua/documents/23fea7c2-e2a1-4f1b-b2dd-37a1838495ea"]],"doc":"https://public.nazk.gov.ua/documents/e25c4c2f-64d1-46bd-b396-0d52b820afe2"},{"id":214,"n":"Лерос Гео Багратович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Позафракційні","post":"народний депутат","flag":"","hold":true,"now":4415,"now_y":2025,"now_c":[["TRX",11977.0,3985],["ADA",1073.0,246],["DOGE",1542.0,129],["ETC",6.746,55],["BTT",33503.0,0]],"pk":1679423,"pk_y":2020,"pk_q":"BTC 49; ETH 356","pk_now":5044302,"van":1679423,"van_now":5044302,"van_c":"BTC 49 (2020); ETH 356 (2020)","gone":"part","yrs":{"2019":398547,"2020":1679423,"2021":2799,"2022":1131,"2023":2213,"2024":4615,"2025":4024},"c19":["ADA","BTC","BTT","DOGE","ETC","ETH","TRX"],"story":"Подарував братові. 19.09.2021 подарував апаратні гаманці з 49 BTC і 356 ETH (повідомлення про суттєві зміни від 28.09.2021). НАЗК пояснення не прийняло: дарування відбулося вже після запиту агентства, а публічної адреси гаманця не надано; висновок про ознаки ст. 366-2 ККУ скеровано до Офісу генпрокурора. НАЗК Лерос пояснив, що отримав крипту на флешці у 2015 чи 2016 році як оплату за послуги в «креативній індустрії»; станом на квітень 2023 року підозри не було.","expl":"2021: дарування (передано)","src":[["повідомлення 28.09.2021","https://public.nazk.gov.ua/documents/f36c478c-0071-48e5-8e56-ce4fc04b9854"],["Слово і діло, 24.01.2022","https://www.slovoidilo.ua/2022/01/24/novyna/polityka/nardep-leros-ne-pidtverdyv-faktu-volodinnya-kryptovalyutoyu-46-mln-hrn-nazk"],["Громадське, 12.04.2023","https://hromadske.ua/posts/miljoni-keshu-elitni-avto-ta-masivni-kriptogamanci-hto-z-nardepiv-ne-otrimav-pidozru-za-brehnyu-v-deklaraciyah"]],"doc":"https://public.nazk.gov.ua/documents/c69d43ef-3540-49f5-a2b8-977945327d38"},{"id":336,"n":"Чорний Віктор Іванович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Платформа за життя та мир","post":"народний депутат","flag":"","hold":false,"now":0,"now_y":2025,"now_c":[],"pk":1677571,"pk_y":2020,"pk_q":"BTC 58","pk_now":4910860,"van":1677571,"van_now":4910860,"van_c":"BTC 58 (2020)","gone":"full","yrs":{"2019":417323,"2020":1677571},"c19":["BTC"],"story":"Пояснення немає. 58 BTC (куплені у 2013 році) — у деклараціях за 2019–2020 роки; з декларації за 2021 рік їх немає, продажу, дарування чи доходу від крипти не задекларовано. Публічних пояснень ми не знайшли.","expl":"у деклараціях пояснення немає","src":[["декларація за 2021","https://public.nazk.gov.ua/documents/bbbeb5ba-75eb-4a0b-a67e-8eab05417999"]],"doc":"https://public.nazk.gov.ua/documents/8fa34470-c7d5-4921-be7d-063051c366bc"},{"id":844,"n":"Гере Юлій Павлович","body":"Уряд","cat":"Заступник міністра","st":"колишній","g":"Міністерство оборони","post":"заступник Міністра","flag":"","hold":true,"now":75167,"now_y":2021,"now_c":[["BTC",0.88776033,75167]],"pk":1532952,"pk_y":2020,"pk_q":"BTC 53","pk_now":4487510,"van":1507275,"van_now":4412343,"van_c":"BTC 52,11 (2020)","gone":"part","yrs":{"2019":381347,"2020":1532952,"2021":41030},"c19":["BTC"],"story":"Пояснення немає. 53 BTC (дата набуття — 01.01.2011, вартість 421 ₴) — у деклараціях за 2019–2020 роки; у декларації за 2021 рік лишилося 0,89 BTC з тією самою датою й вартістю. Продажу, дарування чи доходу від крипти не задекларовано; пізніших щорічних декларацій немає. Публікацій про це ми не знайшли.","expl":"у деклараціях пояснення немає","src":[["декларація за 2020","https://public.nazk.gov.ua/documents/22b8bd51-14d2-416f-b8a1-ade5e41cd5dd"],["декларація за 2021","https://public.nazk.gov.ua/documents/d6a43510-4feb-4bdb-abcd-03c6a7feb7c4"]],"doc":"https://public.nazk.gov.ua/documents/d6a43510-4feb-4bdb-abcd-03c6a7feb7c4"},{"id":276,"n":"Федієнко Олександр Павлович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Слуга народу","post":"народний депутат","flag":"","hold":false,"now":0,"now_y":2025,"now_c":[],"pk":1041251,"pk_y":2020,"pk_q":"BTC 36","pk_now":3048120,"van":1041251,"van_now":3048120,"van_c":"BTC 36 (2020)","gone":"full","yrs":{"2019":259028,"2020":1041251},"c19":["BTC"],"story":"Пояснення немає. 36 BTC (куплені у 2013 році) — у деклараціях за 2018–2020 роки; з декларації за 2021 рік їх немає, правочинів чи доходів із криптою не задекларовано. Публічних пояснень ми не знайшли.","expl":"у деклараціях пояснення немає","src":[["декларація за 2021","https://public.nazk.gov.ua/documents/26c81d02-eebc-47c3-8b3e-a8b285507d5b"]],"doc":"https://public.nazk.gov.ua/documents/ff59e797-924e-4e10-a886-970d4a82434f"},{"id":275,"n":"Маріковський Олександр Валерійович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Слуга народу","post":"народний депутат","flag":"","hold":false,"now":0,"now_y":2025,"now_c":[],"pk":925556,"pk_y":2020,"pk_q":"BTC 32","pk_now":2709440,"van":925556,"van_now":2709440,"van_c":"BTC 32 (2020)","gone":"full","yrs":{"2019":230247,"2020":925556},"c19":["BTC"],"story":"За версією НАБУ — монети йому не належали. 32 BTC (дата набуття — 08.02.2019) — у деклараціях за 2019–2020 роки, з 2021 року їх немає. У січні 2024 року НАБУ повідомило про підозру за ч. 2 ст. 366-2 ККУ: за даними слідства, гаманець йому ніколи не належав, а купівлі робили громадяни іншої держави, не пов'язані з ним.","expl":"у деклараціях пояснення немає","src":[["декларація за 2021","https://public.nazk.gov.ua/documents/579da0af-fa6a-4120-8c09-79ec7d3e0215"],["Главком, 31.01.2024","https://glavcom.ua/country/criminal/nardep-vid-sluhi-narodu-otrimav-pidozru-cherez-nedostovirnu-deklaratsiju-983537.html"]],"doc":"https://public.nazk.gov.ua/documents/a70abc08-fdeb-4c9a-82fb-e10a9a0862e7"},{"id":103,"n":"Гайду Олександр Васильович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Слуга народу","post":"народний депутат","flag":"","hold":false,"now":0,"now_y":2025,"now_c":[],"pk":752014,"pk_y":2020,"pk_q":"BTC 26","pk_now":2201420,"van":752014,"van_now":2201420,"van_c":"BTC 26 (2020)","gone":"full","yrs":{"2020":752014},"c19":["BTC"],"story":"Пояснення немає. 26 BTC (куплені у 2013 році) з'явилися лише в декларації за 2020 рік; у декларації за 2021 рік їх немає, правочинів чи доходів із криптою не задекларовано. Публічних пояснень ми не знайшли.","expl":"у деклараціях пояснення немає","src":[["декларація за 2021","https://public.nazk.gov.ua/documents/f7029211-70c9-40f8-bd56-0f41ac66e875"]],"doc":"https://public.nazk.gov.ua/documents/5b04b9c1-c775-41a4-a64c-b6535457233c"},{"id":217,"n":"Чернєв Єгор Володимирович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Слуга народу","post":"народний депутат","flag":"","hold":true,"now":516487,"now_y":2025,"now_c":[["BTC",6.1,516487]],"pk":570814,"pk_y":2024,"pk_q":"BTC 6,1","pk_now":516487,"van":0,"van_now":0,"van_c":"","gone":"no","yrs":{"2019":0,"2020":176434,"2021":281923,"2022":100909,"2023":257930,"2024":570814,"2025":534654},"c19":["BTC"],"story":"","expl":"у деклараціях пояснення немає","src":[],"doc":"https://public.nazk.gov.ua/documents/4b81ae9a-392f-475e-b11e-8d57dba835a1"},{"id":83,"n":"Воронько Олег Євгенійович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Відновлення України","post":"народний депутат","flag":"","hold":true,"now":0,"now_y":2025,"now_c":[],"pk":433854,"pk_y":2020,"pk_q":"BTC 15","pk_now":1270050,"van":0,"van_now":0,"van_c":"","gone":"no","yrs":{"2019":107928,"2020":433854,"2021":0,"2022":0,"2023":0,"2024":0,"2025":0},"c19":["BTC"],"story":"","expl":"у деклараціях пояснення немає","src":[],"doc":"https://public.nazk.gov.ua/documents/37c7185c-aa4d-4a2e-bbe2-d878008e40c3"},{"id":250,"n":"Юнаков Іван Сергійович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Слуга народу","post":"народний депутат","flag":"","hold":true,"now":268095,"now_y":2025,"now_c":[["XRP",182233.527068,253305],["HBAR",169650.46091367,14626],["TRX",451.838953,150],["ETH",0.00506018,13],["USDT",1.0,1],["XLM",1.00001,0],["ALGO",0.2,0],["XCORE",454.2832,0]],"pk":425459,"pk_y":2024,"pk_q":"XRP 182 234; HBAR 169 604; TRX 451,84; ETH 0,00505; USDT 1; XLM 1; ALGO 0,2; XCORE 454,28","pk_now":268091,"van":58945,"van_now":77677,"van_c":"QNT 342 (2023); ALGO 68 000 (2022); ETH 0,0382 (2023)","gone":"part","yrs":{"2022":115618,"2023":173978,"2024":425459,"2025":353913},"c19":["ALGO","ETH","HBAR","QNT","TRX","USDT","XCORE","XLM","XRP"],"story":"","expl":"2022: купівля 1 842 762 ₴; 2022: купівля 1 477 428 ₴; 2022: купівля 1 389 660 ₴","src":[],"doc":"https://public.nazk.gov.ua/documents/0e6cb248-723d-4da7-bb06-f275e1428231"},{"id":877,"n":"Камишін Олександр Миколайович","body":"Уряд","cat":"Міністр","st":"колишній","g":"Міністерство з питань стратегічних галузей промисловості","post":"Міністр з питань стратегічних галузей промисловості України","flag":"","hold":true,"now":85731,"now_y":2025,"now_c":[["ETH",24.04192,60474],["XRP",18170.291797,25257]],"pk":421169,"pk_y":2022,"pk_q":"BTC 25,46; BUSD 9,32; XRP 0,78; USDT 0,0677","pk_now":2155655,"van":421250,"van_now":2155735,"van_c":"BTC 25,46 (2022); USDT 81,12 (2024); BUSD 9,32 (2023); FDUSD 0,32 (2024); HMSTR 0,38 (2024)","gone":"part","yrs":{"2022":421169,"2023":13,"2024":34260,"2025":104919},"c19":["BTC","BUSD","ETH","FDUSD","HMSTR","USDT","XRP"],"story":"Продав і купив знову. У грудні 2022 року купив 25,46 BTC на Binance (вартість набуття 15,7 млн ₴; у декларації за 2022 рік — купівлі на 15,7 млн ₴ і дохід від продажу крипти 1,86 млн ₴). У декларації за 2023 рік — дохід від продажу криптовалюти 17,46 млн ₴, біткоїнів майже не лишилося. За 2025 рік — нові покупки: 18 170 XRP і 24 ETH (разом 4,4 млн ₴).","expl":"2022: дохід від продажу 1 855 644 ₴; 2022: купівля 1 100 349 ₴; 2022: купівля 136 255 ₴; 2022: купівля 3 648 974 ₴; 2022: купівля 622 288 ₴; 2022: купівля 9 133 914 ₴; 2022: купівля 1 094 987 ₴; 2023: дохід від продажу 17 455 726 ₴","src":[["декларація за 2022","https://public.nazk.gov.ua/documents/b9aef3a7-c3f5-420f-8d11-800ed703ffcf"],["декларація за 2023","https://public.nazk.gov.ua/documents/89024a1f-4a0d-4933-b280-39c71a13717f"],["декларація за 2025","https://public.nazk.gov.ua/documents/30120907-be3d-49ff-85a8-76897edbd403"]],"doc":"https://public.nazk.gov.ua/documents/30120907-be3d-49ff-85a8-76897edbd403"},{"id":667,"n":"Рябікін Павло Борисович","body":"Уряд","cat":"Міністр","st":"колишній","g":"Міністерство з питань стратегічних галузей промисловості","post":"Міністр","flag":"","hold":true,"now":379815,"now_y":2025,"now_c":[["USDT",380000.0,379815]],"pk":380000,"pk_y":2025,"pk_q":"USDT 380 000","pk_now":379815,"van":0,"van_now":0,"van_c":"","gone":"no","yrs":{"2024":380000,"2025":380000},"c19":["USDT"],"story":"Купив. У декларації за 2024 рік — 380 000 USDT, набуті 28.08.2024 за 15,69 млн ₴ (і правочин купівлі на 16,09 млн ₴); за 2025 рік — ті самі 380 000 USDT. Раніше крипти не декларував. Публікацій про це ми не знайшли.","expl":"2024: купівля 16 086 662 ₴","src":[["декларація за 2024","https://public.nazk.gov.ua/documents/26667304-1096-4fc9-9caf-2adbc3b4b655"],["декларація за 2025","https://public.nazk.gov.ua/documents/bb115f2b-d153-42e9-bcb6-6bea19427988"]],"doc":"https://public.nazk.gov.ua/documents/bb115f2b-d153-42e9-bcb6-6bea19427988"},{"id":241,"n":"Халімон Павло Віталійович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Слуга народу","post":"народний депутат","flag":"","hold":false,"now":0,"now_y":2025,"now_c":[],"pk":289236,"pk_y":2020,"pk_q":"BTC 10","pk_now":846700,"van":79148,"van_now":931370,"van_c":"BTC 11 (2019)","gone":"full","yrs":{"2019":79148,"2020":289236},"c19":["BTC"],"story":"","expl":"у деклараціях пояснення немає","src":[],"doc":"https://public.nazk.gov.ua/documents/dedc512d-d656-47e9-9e62-1fcb7ce25041"},{"id":99,"n":"Камельчук Юрій Олександрович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Слуга народу","post":"народний депутат","flag":"","hold":false,"now":0,"now_y":2025,"now_c":[],"pk":182219,"pk_y":2020,"pk_q":"BTC 6,3","pk_now":533421,"van":182219,"van_now":533421,"van_c":"BTC 6,3 (2020)","gone":"full","yrs":{"2020":182219},"c19":["BTC"],"story":"","expl":"у деклараціях пояснення немає","src":[],"doc":"https://public.nazk.gov.ua/documents/7af36014-b50c-4d99-8de7-5fba9b6e8148"},{"id":270,"n":"Устенко Олексій Олегович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Слуга народу","post":"народний депутат","flag":"","hold":false,"now":0,"now_y":2025,"now_c":[],"pk":74137,"pk_y":2019,"pk_q":"BTC 10; ETH 15; LTC 6","pk_now":884802,"van":74137,"van_now":884802,"van_c":"BTC 10 (2019); ETH 15 (2019); LTC 6 (2019)","gone":"full","yrs":{"2019":74137},"c19":["BTC","ETH","LTC"],"story":"","expl":"у деклараціях пояснення немає","src":[],"doc":"https://public.nazk.gov.ua/documents/e3a32a24-f45b-49cc-8d0e-c111ec02b4c7"},{"id":414,"n":"Руденко Ольга Сергіївна","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Слуга народу","post":"народний депутат","flag":"","hold":false,"now":0,"now_y":2025,"now_c":[],"pk":72309,"pk_y":2020,"pk_q":"BTC 2,5","pk_now":211675,"van":72309,"van_now":211675,"van_c":"BTC 2,5 (2020)","gone":"full","yrs":{"2020":72309},"c19":["BTC"],"story":"","expl":"у деклараціях пояснення немає","src":[],"doc":"https://public.nazk.gov.ua/documents/04f6f938-ef82-4de5-9fa2-06c44d54f308"},{"id":427,"n":"Швачко Антон Олексійович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Слуга народу","post":"народний депутат","flag":"","hold":true,"now":32,"now_y":2025,"now_c":[["FDUSD",25.6,26],["LUNC",142319.33,7]],"pk":45986,"pk_y":2021,"pk_q":"BTC 0,995","pk_now":84247,"van":47498,"van_now":86017,"van_c":"BTC 0,995 (2021); USDT 1 386 (2022); BNB 0,512 (2022)","gone":"part","yrs":{"2021":45986,"2022":1533,"2023":67,"2024":41,"2025":32},"c19":["BNB","BTC","FDUSD","LUNC","USD-M FUTURES","USDT"],"story":"","expl":"2025: втрата","src":[],"doc":"https://public.nazk.gov.ua/documents/560cfc81-b79b-459e-a87a-e73deec65b17"},{"id":521,"n":"Віталій Кім","body":"Уряд","cat":"Міністр","st":"чинний","g":"Міністерство у справах ветеранів","post":"Міністр","flag":"","hold":false,"now":0,"now_y":2025,"now_c":[],"pk":30042,"pk_y":2023,"pk_q":"BTC 0,71","pk_now":60157,"van":30042,"van_now":60157,"van_c":"BTC 0,71 (2023)","gone":"full","yrs":{"2022":11753,"2023":30042},"c19":["BTC"],"story":"Продав. 0,71 BTC члена сім'ї, куплені 16.03.2022 на Binance за 848 038 ₴, були в деклараціях за 2022–2023 роки. У декларації за 2024 рік — дохід від продажу 0,71048775 BTC за $50 459,55 (1,96 млн ₴), тобто в гривні вдвічі дорожче за ціну купівлі. З 2024 року крипти немає.","expl":"2024: дохід від продажу 1 957 215 ₴","src":[["декларація за 2022","https://public.nazk.gov.ua/documents/fc55932d-e08e-49aa-b1de-fd694c44e323"],["декларація за 2024","https://public.nazk.gov.ua/documents/d393b1f2-d6c0-4314-89ce-6f9c033f6a24"],["ForkLog, 2024","https://forklog.com/news/ukrainskij-politik-vitalij-kim-zadeklariroval-bitkoin"],["сторінка Мінветеранів","https://mva.gov.ua/persons/kim-vitaliy-oleksandrovich"]],"doc":"https://public.nazk.gov.ua/documents/2bf05bdb-372b-4e68-8552-a0594e7514db"},{"id":649,"n":"Абрамович Дмитро Васильович","body":"Уряд","cat":"Заступник міністра","st":"колишній","g":"Міністерство розвитку громад, територій та інфраструктури","post":"Перший заступник Міністра","flag":"","hold":true,"now":21695,"now_y":2025,"now_c":[["BTC",0.1866,15799],["XRP",1283.0,1783],["BNB",1.8943,1423],["ETH",0.56,1409],["NEAR",62.9,338],["DOGE",3368.2786,281],["SHIB",42923337.43,210],["SOL",1.58,172],["UNI",14.22,99],["DASH",0.606,32],["DOT",25.5427,30],["TRX",76.0,25],["POL",233.9435,21],["SUSHI",102.0,21],["POLS",266.646,15],["ONE",7547.6,10],["SNX",45.5,9],["ENJ",186.0,5],["MASK",12.6,5],["CRV",10.0,3],["ROSE",387.7022,3],["FTT",7.14,2],["ATA",832.0,1],["LUNA TERRA",12.9801,1],["FTM",10.5875,1],["USDT",0.148,0],["ETHW",0.56,0],["LUNC",18.47,0]],"pk":27151,"pk_y":2024,"pk_q":"BTC 0,187; XRP 1 283; ETH 0,56; BNB 1,89; DOGE 3 368; SHIB 42 923 337; NEAR 62,9; SOL 1,58; ONE 7 548; UNI 14,22; DOT 25,54; ATA 832; SUSHI 102; POL 233,94; SNX 45,5; ENJ 186; MASK 12,6; ROSE 387,7; FTT 7,14; DASH 0,606; TRX 76; CRV 10; FTM 10,59; LUNA TERRA 12,98; ETHW 0,56; USDT 0,148; LUNC 18,47; POLS 266,65","pk_now":21695,"van":1689,"van_now":228,"van_c":"MIR 227,2 (2021); LTC 3,08 (2021); MANA 123 (2021); ATOM 6,16 (2021); ICP 2,98 (2021); USDT 9,77 (2021)","gone":"part","yrs":{"2021":8678,"2022":6230,"2023":13247,"2024":27151,"2025":23315},"c19":["ATA","ATOM","BNB","BTC","CRV","DASH","DOGE","DOT","ENJ","ETH","ETHW","FTM","FTT","ICP","LTC","LUNA TERRA","LUNC","MANA","MASK","MIR","NEAR","ONE","POL","POLS","ROSE","SHIB","SNX","SOL","SUSHI","TRX","UNI","USDT","XRP"],"story":"Тримає. Портфель з понад двох десятків монет на Binance з грудня 2021 року: близько 0,19 BTC, 0,56 ETH, 43 млн SHIB, токени DeFi (Uniswap, Curve, Sushi, Synthetix), FTX Token, Terra та інші; кількості з 2022 року не змінюються. Зараз це ≈ $22 тис. (вартість набуття — близько 0,5 млн ₴). Продажів не задекларовано.","expl":"у деклараціях пояснення немає","src":[["декларація за 2021","https://public.nazk.gov.ua/documents/fc628008-3caf-4dd6-85f4-19472b547942"],["декларація за 2025","https://public.nazk.gov.ua/documents/44d1ee85-2aea-4fad-959e-2d94baf4a67b"]],"doc":"https://public.nazk.gov.ua/documents/44d1ee85-2aea-4fad-959e-2d94baf4a67b"},{"id":286,"n":"Мокан Василь Іванович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Слуга народу","post":"народний депутат","flag":"","hold":true,"now":19823,"now_y":2025,"now_c":[["BTC",0.1436401,12162],["ETH",3.04566717,7661]],"pk":23607,"pk_y":2024,"pk_q":"BTC 0,144; ETH 3,05","pk_now":19823,"van":1557,"van_now":2065,"van_c":"LTC 10,76 (2020); XRP 1 006 (2020)","gone":"part","yrs":{"2020":6168,"2021":17835,"2022":6019,"2023":13023,"2024":23607,"2025":21640},"c19":["BTC","ETH","LTC","XRP","НЕ ВКАЗАНО"],"story":"","expl":"у деклараціях пояснення немає","src":[],"doc":"https://public.nazk.gov.ua/documents/843794a5-2b96-40a2-be8d-eaf8ea8ac939"},{"id":886,"n":"Танасишин Назар Дмитрович","body":"Уряд","cat":"Заступник міністра","st":"колишній","g":"Міністерство соціальної політики","post":"Заступник Міністра","flag":"","hold":true,"now":18362,"now_y":2024,"now_c":[["USDT",18370.85218812,18362]],"pk":18371,"pk_y":2024,"pk_q":"USDT 18 371","pk_now":18362,"van":7245,"van_now":13880,"van_c":"BTC 0,155 (2023); ETH 0,305 (2023)","gone":"part","yrs":{"2022":6834,"2023":11152,"2024":18371},"c19":["BTC","ETH","USDT"],"story":"Обміняв на стейблкоїни (ймовірно). У деклараціях за 2022–2023 роки — близько 0,155 BTC, 0,3 ETH і 2 800 USDT на Ledger і WhiteBit; у декларації за 2024 рік біткоїна й ефіру вже немає, а USDT стало 18 371 (з них 17 332 USDT куплено 20.11.2024 за 716 330 ₴). Продажу BTC чи ETH окремо не задекларовано.","expl":"у деклараціях пояснення немає","src":[["декларація за 2023","https://public.nazk.gov.ua/documents/8e659402-eff2-4073-8f3b-8d8ca2d96cf3"],["декларація за 2024","https://public.nazk.gov.ua/documents/ee47b92e-b8e6-472b-acf6-11364f3f01b9"]],"doc":"https://public.nazk.gov.ua/documents/ee47b92e-b8e6-472b-acf6-11364f3f01b9"},{"id":565,"n":"Віталій Головня","body":"Уряд","cat":"Заступник міністра","st":"чинний","g":"Міністерство аграрної політики та продовольства","post":"Заступник міністра","flag":"","hold":true,"now":12352,"now_y":2025,"now_c":[["BTC",0.10135267,8582],["ETH",1.43755329,3616],["TON",96.90991998,132],["ETC",1.68542999,14],["ZILLIQA",3774.293162,8],["LUNC",9671.284076,0],["ETHW",1.39457698,0],["LUNA TERRA",0.14475339,0]],"pk":14293,"pk_y":2024,"pk_q":"BTC 0,101; ETH 1,41; ZILLIQA 3 625; ETC 1,64; ETHW 1,39; LUNC 9 611; LUNA TERRA 0,145","pk_now":12137,"van":0,"van_now":0,"van_c":"","gone":"no","yrs":{"2022":3135,"2023":7127,"2024":14293,"2025":13354},"c19":["BTC","ETC","ETH","ETHW","LUNA TERRA","LUNC","TON","ZILLIQA"],"story":"Невеликий власний портфель на Binance з 07.01.2022: близько 0,1 BTC, 1,4 ETH (і отриманий разом з ним ETHW), Ethereum Classic, Zilliqa, LUNC і LUNA; у 2025 році додано Toncoin. Кількості з року в рік майже не змінюються — довгострокове зберігання; зараз це ≈ $12 тис. Продажів не задекларовано. Публікацій про це ми не знайшли.","expl":"у деклараціях пояснення немає","src":[["декларація за 2022","https://public.nazk.gov.ua/documents/91e7e95f-d119-45e0-a9fb-9ddce8362194"],["декларація за 2025","https://public.nazk.gov.ua/documents/e02a071a-f40d-4664-9c8d-79c5839138fb"],["сторінка Мінагро","https://minagro.gov.ua/persons"]],"doc":"https://public.nazk.gov.ua/documents/e02a071a-f40d-4664-9c8d-79c5839138fb"},{"id":456,"n":"Богдан Драп’ятий","body":"Уряд","cat":"Заступник міністра","st":"чинний","g":"Міністерство внутрішніх справ","post":"Заступник міністра","flag":"","hold":true,"now":12459,"now_y":2025,"now_c":[["USDT",12450.92706561,12445],["STRAX",1314.3843,14]],"pk":12477,"pk_y":2025,"pk_q":"USDT 12 451; STRAX 1 314","pk_now":12459,"van":7946,"van_now":7189,"van_c":"BTC 0,0849 (2024)","gone":"part","yrs":{"2022":741,"2023":6238,"2024":10563,"2025":12477},"c19":["BTC","STRAX","USDT"],"story":"Крипта — у члена сім'ї, на Binance, з 2022 року. У декларації за 2023 рік: 0,085 BTC, 2 519 USDT і Stratis; у декларації за 2025 рік BTC уже немає, а USDT стало 12 451 (вартість набуття 511 901 ₴, дата — 15.07.2025). Продажу біткоїна чи доходу від нього не задекларовано. Кількість Stratis у декларації за 2024 рік зросла вдесятеро (131 → 1 314) за тієї ж вартості набуття — схоже на помилку в записі. Публікацій про це ми не знайшли.","expl":"у деклараціях пояснення немає","src":[["декларація за 2023","https://public.nazk.gov.ua/documents/2c1d7702-07d1-4102-9cac-ea84cdef01d9"],["декларація за 2025","https://public.nazk.gov.ua/documents/0015a7ff-2a88-40bc-806c-747357113277"],["сторінка МВС","https://mvs.gov.ua/team-1/drapyatii-bogdan-jevgenovic"]],"doc":"https://public.nazk.gov.ua/documents/0015a7ff-2a88-40bc-806c-747357113277"},{"id":395,"n":"Рудик Кіра Олександрівна","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Голос","post":"народний депутат","flag":"","hold":false,"now":0,"now_y":2025,"now_c":[],"pk":11336,"pk_y":2019,"pk_q":"BTC 1,01; ETH 31,72","pk_now":164975,"van":11336,"van_now":164975,"van_c":"BTC 1,01 (2019); ETH 31,72 (2019)","gone":"full","yrs":{"2019":11336},"c19":["BTC","ETH"],"story":"","expl":"2020: дохід від продажу 461 080 ₴; 2020: дохід від продажу 505 101 ₴; 2020: відчуження (продаж/припинення права)","src":[],"doc":"https://public.nazk.gov.ua/documents/7d51ba70-2d5e-4cb5-ba7f-6955ad654c87"},{"id":396,"n":"Железняк Ярослав Іванович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Голос","post":"народний депутат","flag":"подружжя: Коваль Ольга Володимирівна (народний депутат, Слуга народу)","hold":true,"now":7520,"now_y":2025,"now_c":[["XRP",5410.279322,7520]],"pk":11331,"pk_y":2024,"pk_q":"XRP 5 438","pk_now":7559,"van":2390,"van_now":2755,"van_c":"SOL 12,86 (2023); ETH 0,4 (2023); BTC 0,00332 (2023); BNB 0,0951 (2023); USDT 0,47 (2023)","gone":"part","yrs":{"2022":450,"2023":2390,"2024":11331,"2025":9967},"c19":["BNB","BTC","ETH","SOL","USDT","XRP"],"story":"","expl":"у деклараціях пояснення немає","src":[],"doc":"https://public.nazk.gov.ua/documents/98d06bc1-cd08-40d4-bd02-54f13cd9b2ed"},{"id":266,"n":"Заблоцький Мар'ян Богданович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Слуга народу","post":"народний депутат","flag":"","hold":true,"now":10262,"now_y":2025,"now_c":[["USDT",10130.498569,10126],["BUSD",109.16,109],["ETH",0.010888,27],["ETHW",0.569859,0]],"pk":10272,"pk_y":2025,"pk_q":"USDT 10 130; BUSD 109,16; ETH 0,0109; ETHW 0,57","pk_now":10262,"van":0,"van_now":0,"van_c":"","gone":"no","yrs":{"2022":1515,"2023":1820,"2024":163,"2025":10272},"c19":["BUSD","ETH","ETHW","USDT"],"story":"","expl":"2022: дохід від продажу 5 681 975 ₴; 2022: відчуження (продаж/припинення права); 2022: купівля 2 369 167 ₴; 2022: купівля 548 378 ₴; 2022: купівля 222 743 ₴; 2022: купівля 274 662 ₴; 2022: купівля 169 829 ₴; 2022: купівля 113 226 ₴","src":[],"doc":"https://public.nazk.gov.ua/documents/875be256-f738-482a-bfb7-b29dd2d86448"},{"id":406,"n":"Лозинський Роман Михайлович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Голос","post":"народний депутат","flag":"","hold":true,"now":7076,"now_y":2025,"now_c":[["BTC",0.066911,5665],["ETH",0.56073,1410],["ETHW",0.56073,0]],"pk":8135,"pk_y":2024,"pk_q":"BTC 0,0669; ETH 0,561; ETHW 0,561","pk_now":7076,"van":0,"van_now":0,"van_c":"","gone":"no","yrs":{"2024":8135,"2025":7531},"c19":["BTC","ETH","ETHW"],"story":"","expl":"у деклараціях пояснення немає","src":[],"doc":"https://public.nazk.gov.ua/documents/c63fc824-ef05-4e36-afad-0316c9bc7d41"},{"id":7,"n":"Мейдич Олег Леонідович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Батьківщина","post":"народний депутат","flag":"","hold":false,"now":0,"now_y":2025,"now_c":[],"pk":5490,"pk_y":2024,"pk_q":"ETH 0,329; XRP 457; BNB 1,02; SOL 3,73; PEPE 27 932 960; LTC 4,87; DOGE 1 585; TIA 98,67","pk_now":3261,"van":5490,"van_now":3261,"van_c":"ETH 0,329 (2024); XRP 457 (2024); BNB 1,02 (2024); SOL 3,73 (2024); PEPE 27 932 960 (2024); LTC 4,87 (2024); DOGE 1 585 (2024); TIA 98,67 (2024)","gone":"full","yrs":{"2024":5490},"c19":["BNB","DOGE","ETH","LTC","PEPE","SOL","TIA","XRP"],"story":"","expl":"у деклараціях пояснення немає","src":[],"doc":"https://public.nazk.gov.ua/documents/9ad9f67d-f60d-4f16-83f1-283fe2dfa199"},{"id":696,"n":"Кушнір Максим Валерійович","body":"Уряд","cat":"Заступник міністра","st":"колишній","g":"Міністерство у справах ветеранів","post":"Заступник Міністра у справах ветеранів України","flag":"","hold":true,"now":2990,"now_y":2024,"now_c":[["BNB",3.50314362,2631],["ETH",0.1006,253],["ARPA",8962.86452553,88],["VET",1704.462554,12],["POND",4136.593928,6]],"pk":3401,"pk_y":2024,"pk_q":"BNB 3,5; ARPA 8 963; ETH 0,101; POND 4 137; VET 1 704","pk_now":2990,"van":0,"van_now":0,"van_c":"","gone":"no","yrs":{"2023":1922,"2024":3401},"c19":["ARPA","BNB","ETH","POND","VET"],"story":"Тримав. Невеликий портфель на Binance з вересня 2023 року: BNB, ARPA, Marlin, VeChain, трохи ETH (вартість набуття 51 522 ₴); у деклараціях за 2023–2024 роки без змін. Пізніших щорічних декларацій немає.","expl":"у деклараціях пояснення немає","src":[["декларація за 2023","https://public.nazk.gov.ua/documents/14f75171-b82c-40ff-9c4e-62c8e4f7fa95"],["декларація за 2024","https://public.nazk.gov.ua/documents/0f6baaf6-a83a-4389-96ca-7486923aa3d9"]],"doc":"https://public.nazk.gov.ua/documents/0f6baaf6-a83a-4389-96ca-7486923aa3d9"},{"id":539,"n":"Станіслав Прибитько","body":"Уряд","cat":"Заступник міністра","st":"чинний","g":"Міністерство цифрової трансформації","post":"Заступник міністра з розвитку цифрової інфраструктури","flag":"","hold":true,"now":206,"now_y":2025,"now_c":[["MOO DENG",4666.151,203],["SUNDOG",2401.779,3]],"pk":1844,"pk_y":2023,"pk_q":"DOT 192,77; NEAR 72","pk_now":616,"van":3024,"van_now":1188,"van_c":"DOT 192,77 (2023); ORCA 301,08 (2024); NEAR 72 (2023)","gone":"part","yrs":{"2023":1844,"2024":1180,"2025":312},"c19":["DOT","MOO DENG","NEAR","ORCA","SUNDOG"],"story":"Власна крипта з 2023 року на Kraken і Bybit, і портфель щороку інший: у декларації за 2023 рік — Polkadot і NEAR (вартість набуття 79 400 ₴), за 2024 — Orca і Sundog (59 340 ₴), за 2025 — мем-коїни Moo Deng і Sundog (13 647 ₴). Продажу чи доходу від відчуження крипти не задекларовано. Публікацій про це ми не знайшли.","expl":"у деклараціях пояснення немає","src":[["декларація за 2023","https://public.nazk.gov.ua/documents/7775017e-f967-476f-a543-8cf2245dd934"],["декларація за 2025","https://public.nazk.gov.ua/documents/d8f8a5fc-f268-4873-b86e-98d8d86be891"],["сторінка Мінцифри","https://thedigital.gov.ua/ministry"]],"doc":"https://public.nazk.gov.ua/documents/d8f8a5fc-f268-4873-b86e-98d8d86be891"},{"id":181,"n":"Зуєв Максим Сергійович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Слуга народу","post":"народний депутат","flag":"","hold":false,"now":0,"now_y":2025,"now_c":[],"pk":1432,"pk_y":2020,"pk_q":"ZILLIQA 9 500; EOS 250; НЕ ВКАЗАНО 5 475","pk_now":44,"van":1432,"van_now":44,"van_c":"ZILLIQA 9 500 (2020); EOS 250 (2020)","gone":"full","yrs":{"2020":1432},"c19":["EOS","ZILLIQA","НЕ ВКАЗАНО"],"story":"","expl":"2021: дохід від продажу 490 000 ₴","src":[],"doc":"https://public.nazk.gov.ua/documents/b5dd4507-7920-4b44-bf4b-216030b7fb9e"},{"id":280,"n":"Нагаєвський Артем Сергійович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Слуга народу","post":"народний депутат","flag":"","hold":true,"now":539,"now_y":2025,"now_c":[["BTC",0.0038,322],["DOGE",2608.717,218]],"pk":1180,"pk_y":2024,"pk_q":"DOGE 2 609; BTC 0,0038","pk_now":539,"van":0,"van_now":0,"van_c":"","gone":"no","yrs":{"2023":234,"2024":1180,"2025":640},"c19":["BTC","DOGE"],"story":"","expl":"у деклараціях пояснення немає","src":[],"doc":"https://public.nazk.gov.ua/documents/7e434466-cecf-451b-900b-c803e3397c4a"},{"id":891,"n":"Кузьмичова Надія Юріївна","body":"Уряд","cat":"Заступник міністра","st":"колишній","g":"Міністерство освіти і науки","post":"заступник Міністра","flag":"","hold":true,"now":267,"now_y":2025,"now_c":[["ADA",1050.0,240],["XCH",11.17595,15],["CFG",112.0,12]],"pk":1158,"pk_y":2024,"pk_q":"ADA 1 050; XCH 11,18; CFG 112","pk_now":267,"van":0,"van_now":0,"van_c":"","gone":"no","yrs":{"2024":1158,"2025":414},"c19":["ADA","CFG","XCH"],"story":"Тримає (член сім'ї). Chia (11,2 XCH), Cardano (1 050 ADA) і Centrifuge (112 CFG) з 2022 року в гаманцях, вартість набуття 21 014 ₴; у деклараціях за 2024–2025 роки без змін, зараз ≈ $270.","expl":"у деклараціях пояснення немає","src":[["декларація за 2024","https://public.nazk.gov.ua/documents/11492802-1651-4600-a165-1b30c61ee12d"],["декларація за 2025","https://public.nazk.gov.ua/documents/1d2ddf21-e5cc-4c63-92a8-c4ce0798f1cf"]],"doc":"https://public.nazk.gov.ua/documents/1d2ddf21-e5cc-4c63-92a8-c4ce0798f1cf"},{"id":439,"n":"Лукашук Богдан Олегович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Батьківщина","post":"народний депутат","flag":"","hold":true,"now":669,"now_y":2025,"now_c":[["XRP",241.0,335],["BTC",0.00110079,93],["USDT",75.8986,76],["ETH",0.02389541,60],["BNB",0.01162362,9]],"pk":872,"pk_y":2024,"pk_q":"XRP 241; UAH 4 331; BTC 0,0011; ETH 0,0239; USDT 75,9; BNB 0,0116","pk_now":669,"van":0,"van_now":0,"van_c":"","gone":"no","yrs":{"2024":872,"2025":800},"c19":["BNB","BTC","ETH","USDT","XRP"],"story":"","expl":"у деклараціях пояснення немає","src":[],"doc":"https://public.nazk.gov.ua/documents/51e7ab7b-58d2-4ea7-a3fe-0cec81b74fe0"},{"id":555,"n":"Денис Курбатов","body":"Уряд","cat":"Заступник міністра","st":"чинний","g":"Міністерство освіти і науки","post":"Заступник міністра","flag":"","hold":true,"now":413,"now_y":2025,"now_c":[["USDT",413.0,413]],"pk":413,"pk_y":2025,"pk_q":"USDT 413","pk_now":413,"van":0,"van_now":0,"van_c":"","gone":"no","yrs":{"2025":413},"c19":["USDT"],"story":"Крипта вперше — у декларації за 2025 рік: 413 USDT члена сім'ї на Bybit (вартість набуття 27 435 ₴) і два доходи від відчуження віртуальних активів — 21 838 ₴ і 3 463 ₴. Публікацій про це ми не знайшли.","expl":"2025: дохід від продажу 21 838 ₴; 2025: дохід від продажу 3 463 ₴","src":[["декларація за 2025","https://public.nazk.gov.ua/documents/a55852ab-39f2-4e1f-bf38-ad3a7617f9a8"],["сторінка МОН","https://mon.gov.ua/persons/denis-kurbatov"]],"doc":"https://public.nazk.gov.ua/documents/a55852ab-39f2-4e1f-bf38-ad3a7617f9a8"},{"id":407,"n":"Совсун Інна Романівна","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Голос","post":"народний депутат","flag":"","hold":false,"now":0,"now_y":2025,"now_c":[],"pk":48,"pk_y":2020,"pk_q":"XRP 218,8","pk_now":304,"van":48,"van_now":304,"van_c":"XRP 218,8 (2020)","gone":"full","yrs":{"2020":48},"c19":["XRP"],"story":"","expl":"у деклараціях пояснення немає","src":[],"doc":"https://public.nazk.gov.ua/documents/9ab17ad9-bd45-4325-ac50-fbbbe3f71cc7"},{"id":745,"n":"Сметанін Герман Володимирович","body":"Уряд","cat":"Міністр","st":"колишній","g":"Міністерство з питань стратегічних галузей промисловості","post":"Міністр з питань стратегічних галузей промисловості України","flag":"","hold":false,"now":0,"now_y":2025,"now_c":[],"pk":18,"pk_y":2023,"pk_q":"BTC 0,00042","pk_now":36,"van":18,"van_now":36,"van_c":"BTC 0,00042 (2023)","gone":"full","yrs":{"2022":7,"2023":18},"c19":["BTC"],"story":"Символічна сума. 0,00042 BTC на Binance (502 ₴, березень 2022 року) — у деклараціях за 2022–2023 роки; з декларації за 2024 рік немає.","expl":"у деклараціях пояснення немає","src":[["декларація за 2023","https://public.nazk.gov.ua/documents/395b4623-c786-4ee3-abb1-ddb9f54360bc"],["декларація за 2024","https://public.nazk.gov.ua/documents/280b68c6-0104-4003-8c41-2268d8dcd7aa"]],"doc":"https://public.nazk.gov.ua/documents/e6ec4b57-d19d-4051-aedb-46500fcde05d"},{"id":320,"n":"Столар Вадим Михайлович","body":"Рада","cat":"Народний депутат","st":"чинний","g":"Відновлення України","post":"народний депутат","flag":"","hold":true,"now":1,"now_y":2025,"now_c":[["USDT",0.86912217,1]],"pk":1,"pk_y":2025,"pk_q":"USDT 0,869","pk_now":1,"van":0,"van_now":0,"van_c":"","gone":"no","yrs":{"2022":1,"2023":1,"2024":1,"2025":1},"c19":["USDT"],"story":"","expl":"2022: дохід від продажу 9 045 884 ₴; 2022: позика; 2022: обмін на валюту 2 714 431 ₴; 2022: обмін на валюту 6 179 608 ₴; 2022: повернення 904 621 ₴; 2022: повернення 10 636 448 ₴","src":[],"doc":"https://public.nazk.gov.ua/documents/c59d82fa-b62c-4e18-88e7-dbe7b242cafb"},{"id":340,"n":"Плачкова Тетяна Михайлівна","body":"Рада","cat":"Народний депутат","st":"колишній","g":"Опозиційна платформа — За життя","post":"народний депутат","flag":"","hold":true,"now":0,"now_y":2023,"now_c":[],"pk":0,"pk_y":2023,"pk_q":"НЕ ВКАЗАНО к-сть не вказано","pk_now":0,"van":0,"van_now":0,"van_c":"","gone":"no","yrs":{"2021":0,"2022":0,"2023":0},"c19":["НЕ ВКАЗАНО"],"story":"","expl":"у деклараціях пояснення немає","src":[],"doc":"https://public.nazk.gov.ua/documents/f41344b9-e75c-42d4-9a5e-8ab62e591e5a"},{"id":809,"n":"Марценюк Олексій Еразмович","body":"Уряд","cat":"Заступник міністра","st":"колишній","g":"Міністерство оборони","post":"заступник Міністра оборони України","flag":"","hold":true,"now":0,"now_y":2020,"now_c":[],"pk":0,"pk_y":2020,"pk_q":"НЕ ВКАЗАНО к-сть не вказано","pk_now":0,"van":0,"van_now":0,"van_c":"","gone":"no","yrs":{"2019":0,"2020":0},"c19":["НЕ ВКАЗАНО"],"story":"Без деталей. У деклараціях за 2019–2020 роки — запис «криптовалюта» без назви монети, кількості й вартості (дата — 31.12.2018). Пізніших щорічних декларацій немає.","expl":"у деклараціях пояснення немає","src":[["декларація за 2019","https://public.nazk.gov.ua/documents/8b4a4508-67c2-492c-8b4f-5fdb0897ef70"],["декларація за 2020","https://public.nazk.gov.ua/documents/070410d2-77ac-4251-b633-f08f1ac31bc8"]],"doc":"https://public.nazk.gov.ua/documents/070410d2-77ac-4251-b633-f08f1ac31bc8"},{"id":820,"n":"Ющенко Олег Олександрович","body":"Уряд","cat":"Заступник міністра","st":"колишній","g":"Міністерство інфраструктури","post":"Заступник міністра","flag":"","hold":true,"now":0,"now_y":2020,"now_c":[],"pk":0,"pk_y":2020,"pk_q":"BTC к-сть не вказано","pk_now":0,"van":0,"van_now":0,"van_c":"","gone":"no","yrs":{"2019":0,"2020":0},"c19":["BTC"],"story":"Без кількості. У деклараціях за 2019–2020 роки — біткоїни, набуті 15.03.2015 за 600 000 ₴, але без кількості монет. Пізніших щорічних декларацій немає.","expl":"у деклараціях пояснення немає","src":[["декларація за 2019","https://public.nazk.gov.ua/documents/92a8fb4b-8517-4e86-9f26-b10513c87141"],["декларація за 2020","https://public.nazk.gov.ua/documents/4e733433-f7fc-4ae0-a90f-a8dd941bbf65"]],"doc":"https://public.nazk.gov.ua/documents/4e733433-f7fc-4ae0-a90f-a8dd941bbf65"},{"id":876,"n":"Кліменков Дмитро Олегович","body":"Уряд","cat":"Заступник міністра","st":"колишній","g":"Міністерство оборони","post":"Заступник міністра","flag":"","hold":true,"now":0,"now_y":2025,"now_c":[["GTN",29601.0,0]],"pk":0,"pk_y":2025,"pk_q":"GTN 29 601","pk_now":0,"van":0,"van_now":0,"van_c":"","gone":"no","yrs":{"2022":0,"2023":0,"2024":0,"2025":0},"c19":["GTN"],"story":"Тримає маловідомий токен. 29 601 GTN (Relictum Pro) на біржі LBank, куплені 26.11.2021 за 14 444 ₴, — у всіх деклараціях за 2022–2025 роки; ринкової ціни цього токена немає.","expl":"у деклараціях пояснення немає","src":[["декларація за 2022","https://public.nazk.gov.ua/documents/4c66b7a6-b08d-46a1-af64-ab55b787d160"],["декларація за 2025","https://public.nazk.gov.ua/documents/6552e0c4-6919-4f90-b5f9-df8a5391feaa"]],"doc":"https://public.nazk.gov.ua/documents/6552e0c4-6919-4f90-b5f9-df8a5391feaa"}],"coins":{"ACE":{"name":"Fusionist (ACE)","kind":"ігровий токен"},"ADA":{"name":"Cardano","kind":"платформа смарт-контрактів"},"ALGO":{"name":"Algorand","kind":"платформа смарт-контрактів"},"ARPA":{"name":"ARPA","kind":"інфраструктура"},"ATA":{"name":"Automata Network","kind":"інфраструктура"},"ATOM":{"name":"Cosmos","kind":"платформа (мережа мереж)"},"BCH":{"name":"Bitcoin Cash","kind":"форк Bitcoin"},"BNB":{"name":"BNB (Binance Coin)","kind":"токен біржі"},"BTC":{"name":"Bitcoin","kind":"основна криптовалюта"},"BTT":{"name":"BitTorrent Token","kind":"токен застосунку"},"BUSD":{"name":"Binance USD","kind":"стейблкоїн (≈ 1 долар)"},"CFG":{"name":"Centrifuge","kind":"токен DeFi-протоколу"},"CRV":{"name":"Curve DAO Token","kind":"токен децентралізованої біржі (DEX)"},"DASH":{"name":"Dash","kind":"платіжна криптовалюта (форк Bitcoin)"},"DOGE":{"name":"Dogecoin","kind":"мем-коїн"},"DOT":{"name":"Polkadot","kind":"платформа (мережа мереж)"},"ENJ":{"name":"Enjin Coin","kind":"ігровий токен"},"EOS":{"name":"EOS (з 2025 — Vaulta)","kind":"платформа смарт-контрактів"},"ETC":{"name":"Ethereum Classic","kind":"форк Ethereum"},"ETH":{"name":"Ethereum","kind":"платформа смарт-контрактів"},"ETHW":{"name":"EthereumPoW","kind":"форк Ethereum"},"FDUSD":{"name":"First Digital USD","kind":"стейблкоїн (≈ 1 долар)"},"FTM":{"name":"Fantom (з 2025 — Sonic)","kind":"платформа смарт-контрактів"},"FTT":{"name":"FTX Token","kind":"токен біржі"},"GTN":{"name":"Relictum Pro (GTN)","kind":"платформа"},"HBAR":{"name":"Hedera","kind":"платформа (hashgraph)"},"HMSTR":{"name":"Hamster Kombat","kind":"ігровий токен"},"ICP":{"name":"Internet Computer","kind":"платформа смарт-контрактів"},"IOTA":{"name":"IOTA","kind":"інфраструктура (інтернет речей)"},"LTC":{"name":"Litecoin","kind":"основна криптовалюта (форк Bitcoin)"},"LUNA TERRA":{"name":"Terra (LUNA 2.0)","kind":"платформа"},"LUNC":{"name":"Terra Classic","kind":"платформа (після краху)"},"MANA":{"name":"Decentraland","kind":"токен віртуального світу"},"MASK":{"name":"Mask Network","kind":"токен застосунку"},"MIR":{"name":"Mirror Protocol","kind":"токен DeFi-протоколу"},"MOO DENG":{"name":"Moo Deng","kind":"мем-коїн"},"NEAR":{"name":"NEAR Protocol","kind":"платформа смарт-контрактів"},"NFP":{"name":"NFPrompt","kind":"токен застосунку"},"ONE":{"name":"Harmony","kind":"платформа смарт-контрактів"},"ORCA":{"name":"Orca","kind":"токен біржі (DEX)"},"PEPE":{"name":"Pepe","kind":"мем-коїн"},"POL":{"name":"Polygon (до 2024 — MATIC)","kind":"мережа масштабування Ethereum"},"POLS":{"name":"Polkastarter","kind":"токен платформи запусків"},"POND":{"name":"Marlin","kind":"інфраструктура"},"QNT":{"name":"Quant","kind":"інфраструктура"},"ROSE":{"name":"Oasis Network","kind":"платформа смарт-контрактів"},"SHIB":{"name":"Shiba Inu","kind":"мем-коїн"},"SNX":{"name":"Synthetix","kind":"токен DeFi-протоколу"},"SOL":{"name":"Solana","kind":"платформа смарт-контрактів"},"STRAX":{"name":"Stratis","kind":"платформа для бізнесу"},"SUNDOG":{"name":"Sundog","kind":"мем-коїн"},"SUSHI":{"name":"SushiSwap","kind":"токен децентралізованої біржі (DEX)"},"TIA":{"name":"Celestia","kind":"інфраструктура блокчейнів"},"TON":{"name":"Toncoin","kind":"платформа смарт-контрактів"},"TRX":{"name":"TRON","kind":"платформа смарт-контрактів"},"UNI":{"name":"Uniswap","kind":"токен децентралізованої біржі (DEX)"},"USDT":{"name":"Tether","kind":"стейблкоїн (1 USDT ≈ 1 долар)"},"VET":{"name":"VeChain","kind":"платформа для бізнесу"},"XCH":{"name":"Chia","kind":"основна криптовалюта"},"XCORE":{"name":"Coreum","kind":"платформа для бізнесу"},"XLM":{"name":"Stellar","kind":"платіжна мережа"},"XMR":{"name":"Monero","kind":"приватна криптовалюта"},"XRP":{"name":"XRP (Ripple)","kind":"платіжна мережа"},"ZILLIQA":{"name":"Zilliqa","kind":"платформа смарт-контрактів"}},"built":"25.10.2026"};
+(function () {
+  const P = DATA.persons, S = DATA.summary;
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const nf = new Intl.NumberFormat('uk-UA');
+  function usd(v) {
+    v = +v || 0;
+    const f = (x, d) => (+x.toFixed(d)).toString().replace('.', ',');
+    if (v >= 1e6) return '$' + f(v / 1e6, v >= 1e8 ? 0 : 1) + ' млн';
+    if (v >= 1e3) return '$' + f(v / 1e3, v >= 1e5 ? 0 : 1) + ' тис.';
+    return '$' + nf.format(Math.round(v));
+  }
+  const usdFull = (v) => '$' + nf.format(Math.round(+v || 0));
+  function qS(q) { q = +q; const t = q >= 1000 ? nf.format(Math.round(q)) : q >= 1 ? (+q.toFixed(2)).toString() : (+q.toPrecision(3)).toString(); return t.replace('.', ','); }
+  function subOf(p) {
+    const was = p.st === 'колишній' ? 'колишній ' : '';
+    if (p.body === 'Рада') return was + 'народний депутат · ' + (p.g === 'Позафракційні' ? 'позафракційний' : '«' + p.g + '»');
+    const post = (p.post || p.cat || '').replace(/Міністр/g, 'міністр').replace(/\s+України$/, '');
+    const org = (p.g || '').replace(/^Міністерство /, 'Мін. ');
+    return was + post.charAt(0).toLowerCase() + post.slice(1) + (org && !post.toLowerCase().includes(org.toLowerCase()) ? ' · ' + org : '');
+  }
+  const coinsText = (list, n) => list.slice(0, n).map((c) => c[0] + ' ' + qS(c[1])).join('; ') + (list.length > n ? ' …' : '');
+
+  // ── шапка ──
+  $('facts').innerHTML = [
+    [nf.format(S.found), 'осіб знайдено в реєстрі НАЗК'],
+    [nf.format(S.ever), 'декларували крипту з 2019 року'],
+    [nf.format(S.holders), 'мають крипту в останній декларації'],
+    [usd(S.now_usd), 'вартість цієї крипти за поточним курсом'],
+    [nf.format(S.gone_full) + ' + ' + nf.format(S.gone_part), 'позбулися повністю + частково'],
+  ].map(([v, k]) => `<div class="fact"><span class="v">${esc(v)}</span><span class="k">${esc(k)}</span></div>`).join('');
+  $('m-sample').textContent = `Разом ${nf.format(S.total)} осіб, з них у реєстрі НАЗК знайдено ${nf.format(S.found)}: ${nf.format(S.mp)} нардепів і ${nf.format(S.gov)} членів уряду.`;
+
+  // ── лідерборд ──
+  const st = { metric: 'pk', body: 'all', st: 'all', has: 'all', q: '', log: true, open: new Set() };
+  const groups = (b) => [...new Set(P.filter((p) => p.body === b).map((p) => p.g))].sort((a, c) => a.localeCompare(c, 'uk'));
+  $('f-body').innerHTML = '<option value="all">Уся вибірка</option><option value="Рада">Верховна Рада</option><option value="Уряд">Уряд</option>'
+    + '<optgroup label="Фракції й групи">' + groups('Рада').map((g) => `<option value="g:${esc(g)}">${esc(g)}</option>`).join('') + '</optgroup>'
+    + '<optgroup label="Міністерства">' + groups('Уряд').map((g) => `<option value="g:${esc(g)}">${esc(g)}</option>`).join('') + '</optgroup>';
+  const NOTES = {
+    pk: 'Найбільший задекларований портфель з 2019 року за ціною на 31 грудня того року. Підпис — рік і монети з кількістю.',
+    now: 'Монети в останній щорічній декларації за поточним курсом (21–25.10.2026). Для тих, хто вже не на посаді, біля суми — рік цієї декларації.',
+    van: 'Скільки коштували монети, які зникли з декларацій, на 31 грудня року, коли їх востаннє декларували. Праворуч — скільки ці монети коштували б зараз.',
+  };
+  function value(p) { return st.metric === 'pk' ? p.pk : st.metric === 'now' ? p.now : p.van; }
+  function label(p) {
+    if (st.metric === 'pk') return `<span class="num">${usd(p.pk)}</span> · ${p.pk_y} · ${esc(p.pk_q)}`;
+    if (st.metric === 'now') return `<span class="num">${usd(p.now)}</span> · ${esc(coinsText(p.now_c, 2))}${p.now_y < 2025 ? ' · декл. ' + p.now_y : ''}`;
+    return `<span class="num">${usd(p.van)}</span> · ${esc(p.van_c.replace(/ \(\d{4}\)/g, ''))} · зараз ${usd(p.van_now)}`;
+  }
+  function pass(p) {
+    if (st.body !== 'all') { if (st.body.startsWith('g:') ? p.g !== st.body.slice(2) : p.body !== st.body) return false; }
+    if (st.st !== 'all' && p.st !== st.st) return false;
+    if (st.has === 'now' && !p.hold) return false;
+    if (st.has === 'gone' && p.gone === 'no') return false;
+    if ((st.has === 'full' || st.has === 'part') && p.gone !== st.has) return false;
+    if (st.q && !p.n.toLowerCase().includes(st.q)) return false;
+    return true;
+  }
+  function detailHtml(p) {
+    const src = (p.src || []).map(([t, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>`);
+    if (p.doc && !p.src.length) src.push(`<a href="${esc(p.doc)}" target="_blank" rel="noopener">остання декларація</a>`);
+    return `<div class="detail">
+      <p>${esc(p.story || p.expl || 'Пояснень у деклараціях немає.')}</p>
+      <p class="meta">Пік з 2019: ${p.pk ? usdFull(p.pk) + ' (' + p.pk_y + ': ' + esc(p.pk_q) + ')' : 'кількість не вказано'}.
+        Зараз${p.now_y < 2025 ? ' (декларація за ' + p.now_y + ')' : ''}: ${p.now_c.length ? usdFull(p.now) + ' — ' + esc(coinsText(p.now_c, 12)) : 'крипти немає'}.
+        ${p.van ? 'Зникло: ' + esc(p.van_c) + ' — тоді ' + usdFull(p.van) + ', за поточним курсом ' + usdFull(p.van_now) + '.' : ''}</p>
+      ${p.flag ? `<p class="meta">${esc(p.flag)}</p>` : ''}
+      ${src.length ? `<p class="src">Джерела: ${src.join(' · ')}</p>` : ''}
+    </div>`;
+  }
+  function drawBoard() {
+    const rows = P.filter(pass);
+    const shown = rows.filter((p) => value(p) > 0).sort((a, b) => value(b) - value(a));
+    const max = Math.max(1, ...shown.map(value));
+    const min = Math.max(1, Math.min(...shown.map(value), max) * 0.6);
+    const w = (v) => st.log ? Math.max(0.6, 100 * (Math.log10(v) - Math.log10(min)) / Math.max(1e-9, Math.log10(max) - Math.log10(min))) : Math.max(0.6, 100 * v / max);
+    $('board').innerHTML = shown.length ? shown.map((p, i) => `<div class="row">
+      <button type="button" class="row-btn" data-id="${p.id}" aria-expanded="${st.open.has(p.id)}">
+        <span class="rank">${i + 1}</span>
+        <span class="who"><span class="nm">${esc(p.n)}</span><br><span class="sub">${esc(subOf(p))}${p.gone === 'full' ? '<span class="pill full">позбувся</span>' : p.gone === 'part' ? '<span class="pill part">частково</span>' : ''}</span></span>
+        <span class="barbox"><span class="bar ${p.st === 'колишній' ? 'was' : 'cur'}" style="width:${(w(value(p)) * 0.62).toFixed(2)}%"></span><span class="lbl">${label(p)}</span></span>
+      </button>${st.open.has(p.id) ? detailHtml(p) : ''}</div>`).join('')
+      : '<p class="note" style="padding:12px">За цими фільтрами нікого немає.</p>';
+    const rest = rows.length - shown.length;
+    $('b-count').textContent = `${shown.length} осіб` + (rest ? ` · ще ${rest} без значення за цим показником` : '');
+    $('metric-note').textContent = NOTES[st.metric];
+  }
+  $('board').addEventListener('click', (e) => {
+    const b = e.target.closest('.row-btn'); if (!b) return;
+    const id = +b.dataset.id; st.open.has(id) ? st.open.delete(id) : st.open.add(id); drawBoard();
+  });
+  function seg(id, key, cb) {
+    $(id).addEventListener('click', (e) => {
+      const b = e.target.closest('button'); if (!b) return;
+      $(id).querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      key(b.dataset.v); cb();
+    });
+  }
+  seg('metric', (v) => { st.metric = v; }, drawBoard);
+  $('f-body').onchange = (e) => { st.body = e.target.value; drawBoard(); };
+  $('f-st').onchange = (e) => { st.st = e.target.value; drawBoard(); };
+  $('f-has').onchange = (e) => { st.has = e.target.value; drawBoard(); };
+  $('f-q').oninput = (e) => { st.q = e.target.value.trim().toLowerCase(); drawBoard(); };
+  $('f-log').onchange = (e) => { st.log = e.target.checked; drawBoard(); };
+  drawBoard();
+
+  // ── динаміка ──
+  const YEARS = [2019, 2020, 2021, 2022, 2023, 2024, 2025];
+  const PAL = ['--s1', '--s2', '--s3', '--s4', '--s5', '--s6', '--s7', '--s8', '--s9', '--s10'];
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const tst = { mode: 'total', log: true };
+  function series() {
+    const key = { total: () => 'Уся вибірка', body: (p) => p.body === 'Рада' ? 'Верховна Рада' : 'Уряд',
+                  fr: (p) => p.body === 'Рада' ? p.g : null, min: (p) => p.body === 'Уряд' ? p.g : null }[tst.mode];
+    const m = new Map();
+    P.forEach((p) => {
+      const k = key(p); if (!k) return;
+      const s = m.get(k) || m.set(k, { name: k, v: YEARS.map(() => 0), h: YEARS.map(() => 0) }).get(k);
+      YEARS.forEach((y, i) => { const v = +(p.yrs[y] || 0); s.v[i] += v; if (v > 0) s.h[i] += 1; });
+    });
+    return [...m.values()].filter((s) => s.v.some((x) => x > 0)).sort((a, b) => Math.max(...b.v) - Math.max(...a.v));
+  }
+  function drawTrend() {
+    const el = $('trend'); el.innerHTML = '';
+    const ss = series();
+    const W = Math.max(320, el.clientWidth - 12), H = Math.round(Math.min(420, Math.max(260, W * 0.42)));
+    const m = { t: 14, r: 16, b: 26, l: 84 };
+    const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Вартість задекларованої крипти за роками');
+    const x = d3.scalePoint(YEARS, [m.l, W - m.r]).padding(0.3);
+    const all = ss.flatMap((s) => s.v).filter((v) => v > 0);
+    const hi = d3.max(all) || 1, lo = Math.max(1, (d3.min(all) || 1) * 0.6);
+    const y = tst.log ? d3.scaleLog([lo, hi * 1.3], [H - m.b, m.t]).clamp(true) : d3.scaleLinear([0, hi * 1.08], [H - m.b, m.t]).nice();
+    const ticks = tst.log ? y.ticks(8).filter((v) => /^[15]/.test(String(v))) : y.ticks(5);
+    svg.append('g').selectAll('line').data(ticks).join('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', y).attr('y2', y).attr('stroke', css('--line'));
+    svg.append('g').selectAll('text').data(ticks).join('text').attr('x', m.l - 8).attr('y', (d) => y(d) + 4).attr('text-anchor', 'end').text((d) => usd(d));
+    svg.append('g').selectAll('text').data(YEARS).join('text').attr('x', x).attr('y', H - 6).attr('text-anchor', 'middle').text((d) => d);
+    const line = d3.line().defined((d) => !tst.log || d > 0).x((d, i) => x(YEARS[i])).y((d) => y(tst.log ? Math.max(d, lo) : d));
+    ss.forEach((s, i) => {
+      const col = css(PAL[i % PAL.length]);
+      svg.append('path').attr('d', line(s.v)).attr('fill', 'none').attr('stroke', col).attr('stroke-width', ss.length > 6 ? 1.8 : 2.4);
+      svg.append('g').selectAll('circle').data(s.v.map((v, j) => [v, j]).filter(([v]) => v > 0)).join('circle')
+        .attr('cx', ([, j]) => x(YEARS[j])).attr('cy', ([v]) => y(v)).attr('r', 3).attr('fill', col);
+    });
+    const guide = svg.append('line').attr('y1', m.t).attr('y2', H - m.b).attr('stroke', css('--muted')).attr('stroke-dasharray', '3 3').attr('opacity', 0);
+    const tip = document.createElement('div'); tip.className = 'tip'; tip.hidden = true; el.appendChild(tip);
+    svg.append('rect').attr('x', m.l).attr('y', m.t).attr('width', W - m.l - m.r).attr('height', H - m.t - m.b).attr('fill', 'transparent')
+      .on('mousemove', (ev) => {
+        const [mx] = d3.pointer(ev); const j = d3.minIndex(YEARS, (yy) => Math.abs(x(yy) - mx)); const yr = YEARS[j];
+        guide.attr('x1', x(yr)).attr('x2', x(yr)).attr('opacity', 1);
+        const lines = ss.map((s, i) => [s, i]).filter(([s]) => s.v[j] > 0).sort((a, b) => b[0].v[j] - a[0].v[j])
+          .map(([s, i]) => `<div><span class="sw" style="background:${css(PAL[i % PAL.length])}"></span>${esc(s.name)}: <span class="num">${usd(s.v[j])}</span> · ${s.h[j]} ос.</div>`);
+        tip.innerHTML = `<b>${yr}</b>${lines.join('') || 'крипти не задекларовано'}`; tip.hidden = false;
+        const r = el.getBoundingClientRect(); let lx = ev.clientX - r.left + 14; if (lx + tip.offsetWidth > r.width) lx = ev.clientX - r.left - tip.offsetWidth - 14;
+        tip.style.left = Math.max(0, lx) + 'px'; tip.style.top = Math.max(0, ev.clientY - r.top - 20) + 'px';
+      })
+      .on('mouseleave', () => { tip.hidden = true; guide.attr('opacity', 0); });
+    $('t-legend').innerHTML = ss.map((s, i) => `<span><span class="sw" style="background:var(${PAL[i % PAL.length]})"></span>${esc(s.name)} <span class="num">${usd(Math.max(...s.v))}</span> макс.</span>`).join('')
+      + (ss.length > PAL.length ? '<span>Кольори повторюються — наведіть на рік, щоб побачити назви.</span>' : '');
+  }
+  seg('t-mode', (v) => { tst.mode = v; }, drawTrend);
+  $('t-log').onchange = (e) => { tst.log = e.target.checked; drawTrend(); };
+  drawTrend();
+  let rT; window.addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(drawTrend, 150); });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', drawTrend);
+
+  // ── матриця ──
+  let mmode = 'c19';
+  function drawMatrix() {
+    const coinsOf = (p) => mmode === 'c19' ? p.c19 : p.now_c.map((c) => c[0]);
+    const cells = new Map(), coinCnt = new Map(), grp = new Map();
+    P.forEach((p) => coinsOf(p).forEach((c) => {
+      const k = p.g + '|' + c; (cells.get(k) || cells.set(k, []).get(k)).push(p.n);
+      coinCnt.set(c, (coinCnt.get(c) || 0) + 1); grp.set(p.g, p.body);
+    }));
+    const coins = [...coinCnt.keys()].sort((a, b) => coinCnt.get(b) - coinCnt.get(a) || a.localeCompare(b));
+    const gs = [...grp.keys()].sort((a, b) => (grp.get(a) === grp.get(b) ? 0 : grp.get(a) === 'Рада' ? -1 : 1) || a.localeCompare(b, 'uk'));
+    const maxc = Math.max(1, ...[...cells.values()].map((v) => v.length));
+    const cname = (c) => c === 'НЕ ВКАЗАНО' ? 'без назви' : c;
+    const head = `<thead><tr><th>Фракція / міністерство</th>${coins.map((c) => `<th class="coin" title="${esc((DATA.coins[c] || {}).name || (c === 'НЕ ВКАЗАНО' ? 'монету в декларації не названо' : c))}">${esc(cname(c))}</th>`).join('')}</tr></thead>`;
+    let lastBody = '';
+    const body = gs.map((g) => (grp.get(g) !== lastBody ? (lastBody = grp.get(g), `<tr><td class="g sect" colspan="${coins.length + 1}">${lastBody === 'Рада' ? 'Верховна Рада' : 'Уряд'}</td></tr>`) : '')
+      + `<tr><td class="g">${esc(g.replace(/^Міністерство /, 'Мін. '))}</td>${coins.map((c) => {
+      const v = cells.get(g + '|' + c) || [];
+      const a = v.length ? 0.15 + 0.6 * v.length / maxc : 0;
+      return `<td class="c" ${v.length ? `title="${esc(c + ': ' + v.join(', '))}" style="background:color-mix(in srgb, var(--accent) ${Math.round(a * 100)}%, transparent)"` : ''}>${v.length || ''}</td>`;
+    }).join('')}</tr>`).join('');
+    $('matrix').innerHTML = head + '<tbody>' + body + '</tbody>';
+  }
+  seg('m-mode', (v) => { mmode = v; }, drawMatrix);
+  drawMatrix();
+
+  // ── зникла крипта ──
+  let gq = '';
+  function drawGone() {
+    const rows = P.filter((p) => p.gone !== 'no').filter((p) => !gq || (p.n + ' ' + p.g + ' ' + p.van_c + ' ' + p.pk_q).toLowerCase().includes(gq))
+      .sort((a, b) => b.van - a.van || b.pk - a.pk);
+    $('g-count').textContent = rows.length + ' осіб';
+    $('gone').innerHTML = `<thead><tr><th>Особа</th><th>Що зникло (рік, коли востаннє)</th><th class="n">Тоді</th><th class="n">Зараз коштувало б</th><th>Пояснення</th></tr></thead><tbody>`
+      + rows.map((p) => `<tr><td><b>${esc(p.n)}</b><br><span class="note">${esc(subOf(p))}</span></td>
+        <td>${esc(p.van_c || (p.gone === 'full' ? 'монети без кількості: ' + p.pk_q : '—'))}</td>
+        <td class="n">${p.van ? usdFull(p.van) : '—'}</td><td class="n">${p.van_now ? usdFull(p.van_now) : '—'}</td>
+        <td class="why">${esc(p.story || p.expl)}${(p.src || []).length ? '<div class="src">' + p.src.map(([t, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>`).join(' · ') + '</div>' : ''}</td></tr>`).join('')
+      + '</tbody>';
+  }
+  $('g-q').oninput = (e) => { gq = e.target.value.trim().toLowerCase(); drawGone(); };
+  drawGone();
+})();
+</script>
+</body>
+</html>
